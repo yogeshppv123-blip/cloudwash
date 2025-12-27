@@ -50607,7 +50607,7 @@ A.a_c.prototype={
 G(a){var s=null,r=t.p
 return A.b9(s,A.cJ(new A.dg(B.bQ,A.aU(A.c([A.bh(A.c([A.bC(A.aU(A.c([A.bh(A.c([B.RA,B.eS,B.ay4],r),B.t,B.m,B.n,0,s),B.b3,A.ac("Your trusted partner for premium laundry and dry cleaning services. We prioritize quality, hygiene, and timely delivery.",s,s,s,A.cL(s,s,B.ec,s,s,s,s,s,s,s,s,s,s,s,s,s,1.6,!0,s,s,s,s,s,s,s,s),s,s,s),B.bz,A.bh(A.c([new A.BU(B.R4,s),new A.BU(B.QV,s),new A.BU(B.QP,s)],r),B.t,B.m,B.n,0,s)],r),B.C,B.m,B.n,0,B.u),2),B.IS,A.bC(A.aU(A.c([B.ayo,B.b3,new A.ih("Home",new A.aAC(a),s),new A.ih("About Us",new A.aAD(a),s),new A.ih("Blog",new A.aAE(a),s),new A.ih("My Bookings",new A.aAG(a),s),new A.ih("Reviews",new A.aAH(a),s),new A.ih("Contact",new A.aAI(a),s)],r),B.C,B.m,B.n,0,B.u),1),A.bC(A.aU(A.c([B.ay6,B.b3,new A.ih("Dry Cleaning",new A.aAJ(a),s),new A.ih("Steam Ironing",new A.aAK(a),s),new A.ih("Shoe Care",new A.aAL(a),s),new A.ih("Carpet Cleaning",new A.aAM(a),s)],r),B.C,B.m,B.n,0,B.u),1),A.bC(A.aU(A.c([B.ayy,B.b3,new A.AW(B.Rg,"+91 98765 43210",s),B.az,new A.AW(B.R3,"support@cloudwash.com",s),B.az,new A.AW(B.nW,"123, Laundry Lane, Bangalore",s)],r),B.C,B.m,B.n,0,B.u),1)],r),B.C,B.m,B.n,0,s),B.q7,A.aXi(B.d2,s),B.bz,A.bh(A.c([A.ac("\xa9 2025 Cloud Wash. All rights reserved.",s,s,s,A.cL(s,s,B.bs,s,s,s,s,s,s,s,s,s,s,s,s,s,s,!0,s,s,s,s,s,s,s,s),s,s,s),A.bh(A.c([new A.ih("Privacy Policy",new A.aAN(a),s),B.fX,new A.ih("Terms of Service",new A.aAF(a),s)],r),B.t,B.m,B.n,0,s)],r),B.t,B.cq,B.n,0,s)],r),B.t,B.m,B.n,0,B.u),s),s,s),B.q,B.Os,s,s,s,s,s,B.en,s,s,s)}}
 A.aAC.prototype={
-$0(){return A.cg(this.a).ej(0,"/home",null)},
+$0(){return A.cg(this.a).ej(0,"/",null)},
 $S:0}
 A.aAD.prototype={
 $0(){return A.cg(this.a).ej(0,"/about",null)},
@@ -50655,10 +50655,10 @@ A.a_d.prototype={
 jZ(a,b){var s=null,r=A.c([new A.dl(0,B.bi,A.ay(13,B.o.C()>>>16&255,B.o.C()>>>8&255,B.o.C()&255),B.pn,10)],t.sq),q=t.p
 return A.b9(s,A.cJ(new A.dg(B.bQ,A.bh(A.c([A.hW(!1,!0,A.bh(A.c([A.dX(B.fq,A.Z(a).dx,s,32),B.eT,A.ac("Cloud Wash",s,s,s,A.cL(s,s,A.Z(a).dx,s,s,s,s,s,s,s,s,24,s,s,B.S,s,s,!0,s,s,s,s,s,s,s,s),s,s,s)],q),B.t,B.m,B.n,0,s),s,!0,s,s,s,s,s,s,s,s,s,s,new A.aAS(a),s,s,s,s),B.qc,new A.wM("Home",new A.aAT(a),s),new A.wM("About",new A.aAU(a),s),new A.wM("Services",new A.aAV(a),s),new A.wM("Contact",new A.aAW(a),s),B.qc,A.me(s,s,B.RC,s,s,new A.aAX(),s,s,s),B.eT,A.hW(!1,!0,A.aWE(B.ef,B.RG,18),s,!0,s,s,s,s,s,s,s,s,s,s,new A.aAY(a),s,s,s,s),B.fX,A.u2(B.ay5,new A.aAZ(a),A.aSc(s,s,A.Z(a).dx,s,s,s,2,s,s,B.l,s,s,B.ty,s,new A.dG(A.c8(25),B.z),s,s,s,s,s))],q),B.t,B.m,B.n,0,s),s),s,s),B.q,s,s,new A.bI(B.l,s,s,s,r,s,B.L),s,80,s,B.Qn,s,s,s)}}
 A.aAS.prototype={
-$0(){return A.cg(this.a).ej(0,"/home",null)},
+$0(){return A.cg(this.a).ej(0,"/",null)},
 $S:0}
 A.aAT.prototype={
-$0(){return A.cg(this.a).ej(0,"/home",null)},
+$0(){return A.cg(this.a).ej(0,"/",null)},
 $S:0}
 A.aAU.prototype={
 $0(){return A.cg(this.a).ej(0,"/about",null)},

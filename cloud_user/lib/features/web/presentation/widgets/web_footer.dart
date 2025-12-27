@@ -58,7 +58,7 @@ class WebFooter extends StatelessWidget {
                       children: [
                         const Text('Quick Links', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 24),
-                        _FooterLink('Home', onTap: () => context.go('/home')),
+                        _FooterLink('Home', onTap: () => context.go('/')),
                         _FooterLink('About Us', onTap: () => context.go('/about')),
                         _FooterLink('Blog', onTap: () => context.go('/blog')),
                         _FooterLink('My Bookings', onTap: () => context.go('/bookings')),

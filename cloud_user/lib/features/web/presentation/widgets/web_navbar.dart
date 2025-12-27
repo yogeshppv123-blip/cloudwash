@@ -27,7 +27,7 @@ class WebNavBar extends ConsumerWidget {
             children: [
               // Logo
               InkWell(
-                onTap: () => context.go('/home'),
+                onTap: () => context.go('/'),
                 child: Row(
                   children: [
                     Icon(Icons.local_laundry_service, color: Theme.of(context).primaryColor, size: 32),
@@ -46,7 +46,7 @@ class WebNavBar extends ConsumerWidget {
               const Spacer(),
               
               // Nav Links (Restored Blog & Reviews)
-              _NavLink(label: 'Home', onTap: () => context.go('/home')),
+              _NavLink(label: 'Home', onTap: () => context.go('/')),
               _NavLink(label: 'About', onTap: () => context.go('/about')),
               _NavLink(label: 'Services', onTap: () => context.go('/services')),
               _NavLink(label: 'Contact', onTap: () => context.go('/contact')),
