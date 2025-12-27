@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
 
 class WebFooter extends StatelessWidget {
   const WebFooter({super.key});
@@ -142,11 +143,13 @@ class WebFooter extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      _MinimalLink('Privacy Policy'),
+                      _MinimalLink('Privacy Policy', route: '/privacy'),
                       const SizedBox(width: 32),
-                      _MinimalLink('Terms of Service'),
+                      _MinimalLink('Terms of Service', route: '/terms'),
                       const SizedBox(width: 32),
-                      _MinimalLink('Sitemap'),
+                      _MinimalLink('Child Protection', route: '/child-protection'),
+                      const SizedBox(width: 32),
+                      _MinimalLink('Sitemap', route: '/'),
                     ],
                   ),
                 ],
@@ -277,13 +280,17 @@ class _SocialButtonState extends State<_SocialButton> {
 
 class _MinimalLink extends StatelessWidget {
   final String label;
-  const _MinimalLink(this.label);
+  final String route;
+  const _MinimalLink(this.label, {required this.route});
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      label,
-      style: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 13),
+    return InkWell(
+      onTap: () => context.go(route),
+      child: Text(
+        label,
+        style: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 13),
+      ),
     );
   }
 }

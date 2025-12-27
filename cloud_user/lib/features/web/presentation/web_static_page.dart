@@ -10,6 +10,7 @@ enum StaticPageType {
   contactUs,
   blog,
   reviews,
+  childProtection,
 }
 
 class WebStaticPage extends StatelessWidget {
@@ -212,8 +213,42 @@ class WebStaticPage extends StatelessWidget {
             ],
           ),
         );
+
+      case StaticPageType.childProtection:
+        return _PageData(
+          title: 'Child Protection Policy',
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _paragraph('Last Updated: December 2024'),
+              _paragraph(
+                'At Cloud Wash, the safety and well-being of children are of paramount importance. This policy outlines our commitment to protecting children in the communities we serve.',
+              ),
+              _heading('1. Our Commitment'),
+              _paragraph(
+                'We are dedicated to maintaining a safe environment for everyone, especially minors. Our service professionals are trained to act with the highest level of integrity and respect when interacting with households where children are present.',
+              ),
+              _heading('2. Background Verifications'),
+              _paragraph(
+                'All Cloud Wash professionals undergo rigorous background checks and identity verification before being onboarded. This is to ensure that only trustworthy individuals are allowed access to our customers\' homes.',
+              ),
+              _heading('3. No Direct Interaction'),
+              _paragraph(
+                'Our services are intended for adults. We do not knowingly collect personal information from children under the age of 18. Service professionals are instructed to interact only with the adult customer who booked the service.',
+              ),
+              _heading('4. Reporting Concerns'),
+              _paragraph(
+                'If you have any concerns regarding the conduct of our staff or any potential safety issues involving a minor, please report it immediately to our 24/7 support team at safety@cloudwash.com.',
+              ),
+              _heading('5. Online Safety'),
+              _paragraph(
+                'Our digital platform is designed to be safe for all users. We implement strict security measures to prevent unauthorized access to customer data.',
+              ),
+            ],
+          ),
+        );
     }
-  }
+}
 
   Widget _paragraph(String text) {
     return Padding(

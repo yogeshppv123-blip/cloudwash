@@ -136,6 +136,10 @@ GoRouter _buildWebRouter() {
         builder: (context, state) => const WebStaticPage(pageType: StaticPageType.reviews),
       ),
       GoRoute(
+        path: '/child-protection',
+        builder: (context, state) => const WebStaticPage(pageType: StaticPageType.childProtection),
+      ),
+      GoRoute(
         path: '/map',
         builder: (context, state) => const MapScreen(),
       ),
