@@ -3,12 +3,15 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   // Colors
-  static const Color primary = Color(0xFF2563EB); // Royal Blue
-  static const Color primaryDark = Color(0xFF1E40AF);
-  static const Color primaryLight = Color(0xFF60A5FA);
+  // Colors - Premium Palette
+  static const Color primary = Color(0xFF0F172A); // Midnight Blue
+  static const Color primaryDark = Color(0xFF020617);
+  static const Color primaryLight = Color(0xFF1E293B);
   
-  static const Color secondary = Color(0xFF0F172A); // Slate 900
-  static const Color background = Color(0xFFF8FAFC); // Slate 50
+  static const Color accent = Color(0xFFD4AF37); // Luxury Gold
+  
+  static const Color secondary = Color(0xFF1E1E1E); // Charcoal
+  static const Color background = Color(0xFFF8F9FA); // Off-White (Warm)
   static const Color surface = Colors.white;
   
   static const Color error = Color(0xFFDC2626);
@@ -28,24 +31,25 @@ class AppTheme {
         background: background,
         surface: surface,
         primary: primary,
-        secondary: secondary,
+        secondary: accent, // Use Gold as secondary
         error: error,
       ),
       
-      // Typography
+      // Typography - Serif Headings + Sans Body
       textTheme: TextTheme(
-        displayLarge: GoogleFonts.outfit(
+        displayLarge: GoogleFonts.playfairDisplay(
+          fontSize: 40, // Increased size
+          fontWeight: FontWeight.bold,
+          color: textPrimary,
+          letterSpacing: -0.5,
+        ),
+        displayMedium: GoogleFonts.playfairDisplay(
           fontSize: 32,
           fontWeight: FontWeight.bold,
           color: textPrimary,
         ),
-        displayMedium: GoogleFonts.outfit(
+        headlineMedium: GoogleFonts.playfairDisplay(
           fontSize: 28,
-          fontWeight: FontWeight.bold,
-          color: textPrimary,
-        ),
-        headlineMedium: GoogleFonts.outfit(
-          fontSize: 24,
           fontWeight: FontWeight.w600,
           color: textPrimary,
         ),
@@ -53,14 +57,17 @@ class AppTheme {
           fontSize: 20,
           fontWeight: FontWeight.w600,
           color: textPrimary,
+          letterSpacing: 0.5,
         ),
         bodyLarge: GoogleFonts.inter(
           fontSize: 16,
           color: textPrimary,
+          height: 1.6, // Increased line height
         ),
         bodyMedium: GoogleFonts.inter(
           fontSize: 14,
           color: textSecondary,
+          height: 1.5,
         ),
       ),
       

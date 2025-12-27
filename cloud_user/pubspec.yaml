@@ -57,3 +57,12 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
+  assets:
+    - assets/images/
+    - assets/images/logo.png
+    - assets/images/icons/laundry.png
+    - assets/images/icons/dry_cleaning.png
+    - assets/images/icons/shoe_cleaning.png
+    - assets/images/icons/leather_cleaning.png
+    - assets/images/icons/curtain_cleaning.png
+    - assets/images/icons/carpet_cleaning.png

@@ -2,8 +2,11 @@ import 'package:cloud_user/core/theme/app_theme.dart';
 import 'package:cloud_user/features/home/data/home_providers.dart';
 import 'package:cloud_user/features/web/presentation/web_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'dart:math' as math;
+
 
 class WebHomeScreen extends ConsumerStatefulWidget {
   const WebHomeScreen({super.key});
@@ -23,6 +26,10 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
       case 'leather cleaning': return Icons.work_outline;
       case 'curtain cleaning': return Icons.curtains;
       case 'carpet cleaning': return Icons.texture;
+      case 'bag cleaning': return Icons.shopping_bag_outlined;
+      case 'sofa cleaning': return Icons.weekend_outlined;
+      case 'blanket cleaning': return Icons.bed_outlined;
+      case 'iron only': return Icons.iron_outlined;
       default: return Icons.local_laundry_service;
     }
   }
@@ -52,6 +59,7 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
             children: [
               _buildHeroSection(context),
               _buildCategoriesSection(context, categoriesAsync),
+              _buildAboutUsSection(context),
               _buildSpotlightSection(context),
               _buildOffersSection(context),
               _buildMostBookedSection(context),
@@ -77,189 +85,226 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
   Widget _buildHeroSection(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [AppTheme.primary.withOpacity(0.05), Colors.white],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
+      padding: const EdgeInsets.only(top: 0, bottom: 0, left: 40, right: 40),
+      decoration: const BoxDecoration(
+        color: Colors.white,
       ),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: AppTheme.success.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.star, size: 16, color: AppTheme.success),
-                          const SizedBox(width: 8),
-                          Text(
-                            '4.8/5 Rated Professionals',
-                            style: TextStyle(color: AppTheme.success, fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    const Text(
-                      'Premium Laundry &\nDry Cleaning',
-                      style: TextStyle(fontSize: 56, fontWeight: FontWeight.bold, height: 1.1, color: AppTheme.textPrimary),
-                    ),
-                    const SizedBox(height: 16),
-                    Text('At Your Doorstep • Free Pickup & Delivery', style: TextStyle(fontSize: 20, color: Colors.grey.shade600)),
-                    const SizedBox(height: 24),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(colors: [Color(0xFF1976D2), Color(0xFF42A5F5)]),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Text('🎉 Flat 20% OFF on First Order!', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
+      child: Stack(
+        children: [
+          // Animated Bubble Gradients
+          Positioned(
+            top: -50,
+            left: -50,
+            child: _AnimatedBubble(size: 200, color: const Color(0xFF89CFF0).withOpacity(0.3), delay: 0),
+          ),
+          Positioned(
+            top: 100,
+            right: 100,
+            child: _AnimatedBubble(size: 120, color: const Color(0xFFB5EAD7).withOpacity(0.4), delay: 1),
+          ),
+          Positioned(
+            bottom: -30,
+            left: 200,
+            child: _AnimatedBubble(size: 150, color: const Color(0xFFC9B1FF).withOpacity(0.3), delay: 2),
+          ),
+          Positioned(
+            bottom: 50,
+            right: -30,
+            child: _AnimatedBubble(size: 180, color: const Color(0xFF89CFF0).withOpacity(0.25), delay: 0.5),
+          ),
+          Positioned(
+            top: 200,
+            left: 400,
+            child: _AnimatedBubble(size: 80, color: const Color(0xFFFFD1DC).withOpacity(0.4), delay: 1.5),
+          ),
+          // Main Content
+          Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1200),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Left Side Content
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _FeatureBadge(icon: Icons.local_shipping, text: 'Free Pickup'),
-                        const SizedBox(width: 16),
-                        _FeatureBadge(icon: Icons.flash_on, text: '24Hr Express'),
-                        const SizedBox(width: 16),
-                        _FeatureBadge(icon: Icons.eco, text: 'Eco-Friendly'),
-                      ],
-                    ),
-                    const SizedBox(height: 32),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 20, offset: const Offset(0, 10))],
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(Icons.search, color: Colors.grey.shade400, size: 24),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: TextField(
-                              decoration: InputDecoration(
-                                hintText: "Search for 'Laundry', 'Dry Cleaning'...",
-                                hintStyle: TextStyle(color: Colors.grey.shade400),
-                                border: InputBorder.none,
+                        // Tagline
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.8),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: Colors.blue.shade100),
+                          ),
+                          child: Text(
+                            '✨ We Are Clino',
+                            style: TextStyle(color: Colors.blue.shade700, fontSize: 14, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        // Main Title
+                        Text(
+                          'Feel Your Way For\nFreshness',
+                          style: GoogleFonts.playfairDisplay(
+                            fontSize: 52,
+                            fontWeight: FontWeight.bold,
+                            height: 1.15,
+                            color: const Color(0xFF1E293B),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        // Description
+                        Text(
+                          'Experience the epitome of cleanliness with Clino. We provide top-notch cleaning services tailored to your needs, ensuring your spaces shine with perfection.',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey.shade600,
+                            height: 1.6,
+                          ),
+                        ),
+                        const SizedBox(height: 32),
+                        // Action Buttons
+                        Row(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () => context.push('/services'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF1E3A5F),
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                                elevation: 0,
                               ),
-                              onSubmitted: (query) { if (query.isNotEmpty) context.push('/services'); },
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  Text('Our Services', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+                                  SizedBox(width: 8),
+                                  Icon(Icons.arrow_forward, size: 18),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    Row(
-                      children: [
-                        Text('Trending: ', style: TextStyle(color: Colors.grey.shade600)),
-                        _TrendingTag('Laundry', () => context.push('/category/1', extra: 'Laundry')),
-                        _TrendingTag('Dry Cleaning', () => context.push('/category/2', extra: 'Dry Cleaning')),
-                        _TrendingTag('Shoe Cleaning', () => context.push('/category/3', extra: 'Shoe Cleaning')),
+                            const SizedBox(width: 16),
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 15)],
+                              ),
+                              child: IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.play_arrow, color: Colors.blue.shade700),
+                                iconSize: 28,
+                                padding: const EdgeInsets.all(14),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 40),
+                        // VIP Clients & Stats
+                        Row(
+                          children: [
+                            // Avatar Stack
+                            SizedBox(
+                              width: 100,
+                              height: 40,
+                              child: Stack(
+                                children: List.generate(4, (i) => Positioned(
+                                  left: i * 22.0,
+                                  child: CircleAvatar(
+                                    radius: 20,
+                                    backgroundColor: Colors.white,
+                                    child: CircleAvatar(
+                                      radius: 18,
+                                      backgroundColor: [Colors.blue, Colors.purple, Colors.teal, Colors.orange][i],
+                                      child: Text(['👤', '👨', '👩', '🧑'][i], style: const TextStyle(fontSize: 14)),
+                                    ),
+                                  ),
+                                )),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Text('Our VIP Clients', style: TextStyle(color: Colors.grey.shade700, fontSize: 14)),
+                          ],
+                        ),
+                        const SizedBox(height: 24),
+                        // Stats Cards
+                   
                       ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 60),
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.network(
-                    'https://res.cloudinary.com/dms3qxrd2/image/upload/v1766748447/cloudwash_j3rnfa.jpg',
-                    height: 500,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(
-                      height: 500,
-                      color: Colors.grey.shade200,
-                      child: const Center(child: Icon(Icons.image, size: 100, color: Colors.grey)),
                     ),
                   ),
-                ),
+                  const SizedBox(width: 100), // Increased gap for better breathing room
+                  // Right Side Image
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.network(
+                        'https://res.cloudinary.com/dssmutzly/image/upload/v1766830730/4d01db37af62132b8e554cfabce7767a_z7ioie.png',
+                        height: 500,
+                        fit: BoxFit.contain,
+                        errorBuilder: (_, __, ___) => Container(
+                          height: 500,
+                          decoration: BoxDecoration(
+                            color: Colors.blue.shade50,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Center(child: Icon(Icons.cleaning_services, size: 100, color: Colors.blue)),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
 
   Widget _buildCategoriesSection(BuildContext context, AsyncValue<List<dynamic>> categoriesAsync) {
     final mockCategories = [
-      {'name': 'Laundry', 'id': '1', 'subtitle': 'Wash & Fold | Wash & Steam Iron'},
-      {'name': 'Dry Cleaning', 'id': '2', 'subtitle': 'Designer Wear, Heavy Ethnic Wear'},
-      {'name': 'Shoe Cleaning', 'id': '3', 'subtitle': 'Shoe Cleaning, Restoration'},
-      {'name': 'Leather Cleaning', 'id': '4', 'subtitle': 'Bags, Jackets, Wallets'},
-      {'name': 'Curtain Cleaning', 'id': '5', 'subtitle': 'Silk, Cotton, Velvet'},
-      {'name': 'Carpet Cleaning', 'id': '6', 'subtitle': 'Persian, Silk, Turkish'},
+      {'name': 'Laundry', 'id': '1', 'count': '250+ Items'},
+      {'name': 'Dry Cleaning', 'id': '2', 'count': '500+ Items'},
+      {'name': 'Shoe Cleaning', 'id': '3', 'count': '100+ Items'},
+      {'name': 'Leather Cleaning', 'id': '4', 'count': '120+ Items'},
+      {'name': 'Curtain Cleaning', 'id': '5', 'count': '95+ Items'},
+      {'name': 'Carpet Cleaning', 'id': '6', 'count': '150+ Items'},
     ];
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 40),
+      padding: const EdgeInsets.only(top: 20, bottom: 60, left: 40, right: 40),
       color: Colors.white,
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1200),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Centered Title
+              const Text('Shop By Category', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Color(0xFF1E293B))),
+              const SizedBox(height: 50),
+              // 6 Categories in 1 Row as Cards
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('All Categories', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                  TextButton(
-                    onPressed: () => context.push('/services'),
-                    child: Row(
-                      children: [
-                        Text('View All', style: TextStyle(color: AppTheme.primary, fontWeight: FontWeight.w600)),
-                        Icon(Icons.arrow_forward, size: 16, color: AppTheme.primary),
-                      ],
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: mockCategories.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final item = entry.value;
+                  return Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: _CategoryItem(
+                        name: item['name']!,
+                        count: item['count']!,
+                        icon: _getCategoryIcon(item['name']!),
+                        iconColor: _getCardColor(index),
+                        imagePath: _getCategoryImagePath(item['name']!),
+                        onTap: () => context.push('/category/${item['id']}', extra: item['name']),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 32),
-              categoriesAsync.when(
-                data: (categories) => Wrap(
-                  spacing: 24, runSpacing: 24,
-                  children: (categories.isEmpty ? mockCategories : categories).asMap().entries.map((entry) {
-                    final category = entry.value;
-                    final name = category is Map ? category['name'] as String : category.name;
-                    final id = category is Map ? category['id'] as String : category.id;
-                    return _CategoryCard(
-                      name: name,
-                      icon: _getCategoryIcon(name),
-                      bgColor: _getCategoryColor(entry.key),
-                      onTap: () => context.push('/category/$id', extra: name),
-                    );
-                  }).toList(),
-                ),
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (err, _) => Wrap(
-                  spacing: 24, runSpacing: 24,
-                  children: mockCategories.asMap().entries.map((entry) {
-                    return _CategoryCard(
-                      name: entry.value['name']!,
-                      icon: _getCategoryIcon(entry.value['name']!),
-                      bgColor: _getCategoryColor(entry.key),
-                      onTap: () => context.push('/category/${entry.value['id']}', extra: entry.value['name']),
-                    );
-                  }).toList(),
-                ),
+                  );
+                }).toList(),
               ),
             ],
           ),
@@ -268,66 +313,154 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
     );
   }
 
-  // 6 Stage Process (RE-DESIGNED TO MATCH SCREENSHOT EXACTLY)
-  Widget _buildHowItWorksSection(BuildContext context) {
+
+
+  Widget _buildAboutUsSection(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
-      color: const Color(0xFFFEF2F2), // Light Pink background from design
+      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 40),
+      color: Colors.white,
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1200),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Left side: Text and Buttons
+              // Left Side: Image Collage
               Expanded(
-                flex: 1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      '6 STAGE PROCESS FOR\nUNMATCHED GARMENT CARE',
-                      style: TextStyle(
-                        fontSize: 32, 
-                        fontWeight: FontWeight.bold, 
-                        color: Color(0xFFBC8E8E), // Reddish-pink title
-                        height: 1.2,
+                flex: 6,
+                child: SizedBox(
+                  height: 550,
+                  child: Stack(
+                    children: [
+                      // Star Icons
+                      Positioned(
+                        top: 40,
+                        left: 20,
+                        child: _ShiningStars(),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    Container(width: 400, height: 1.5, color: Colors.grey.shade300),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Specialized Machinery & Skilled Experts for each stage makes us the best laundry & dry cleaner near you.',
-                      style: TextStyle(fontSize: 18, color: Color(0xFF4A4A4A), height: 1.5),
-                    ),
-                    const SizedBox(height: 20),
-                    Container(width: 400, height: 1.5, color: Colors.grey.shade300),
-                    const SizedBox(height: 48),
-                    const Text('To Place Your Order', style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        _ProcessButton(text: 'Chat On WhatsApp', color: const Color(0xFFD8A0A0)),
-                        const SizedBox(width: 12),
-                        _ProcessButton(text: 'Schedule Free Pickup', color: const Color(0xFFD8A0A0)),
-                      ],
-                    ),
-                  ],
+                      // Top Right Image
+                      Positioned(
+                        top: 0,
+                        right: 40,
+                        child: _RoundedImage(
+                          imageUrl: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?q=80&w=500&auto=format&fit=crop',
+                          width: 320,
+                          height: 380,
+                        ),
+                      ),
+                      // Bottom Left Image
+                      Positioned(
+                        bottom: 20,
+                        left: 40,
+                        child: _RoundedImage(
+                          imageUrl: 'https://images.unsplash.com/photo-1582735689369-4fe89db7114c?q=80&w=500&auto=format&fit=crop',
+                          width: 300,
+                          height: 350,
+                        ),
+                      ),
+                      // Play Video Card
+                      Positioned(
+                        bottom: 0,
+                        left: 280,
+                        child: Container(
+                          padding: const EdgeInsets.all(24),
+                          width: 180,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF4AC3F5),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF4AC3F5).withOpacity(0.3),
+                                blurRadius: 20,
+                                offset: const Offset(0, 10),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 44,
+                                height: 44,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color(0xFFFFB100),
+                                ),
+                                child: const Center(
+                                  child: Icon(Icons.play_arrow, color: Colors.white, size: 24),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              const Text(
+                                'Play Video',
+                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                'How we care for your clothes',
+                                style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 12),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(width: 80),
-              // Right side: Vertical Timeline
+              // Right Side: Content
               Expanded(
-                flex: 1,
+                flex: 5,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _TimelineItem(1, 'Sorting & Inspection', 'Segregation basis care label, fabric type and color'),
-                    _TimelineItem(2, 'Stain Treatment', 'Italian spotting machines | American stain removing solutions'),
-                    _TimelineItem(3, 'Processing', 'World-Renowned Italian Dry cleaning machines | German Eco friendly cleaning solutions'),
-                    _TimelineItem(4, 'Finishing', 'Unique Steam Ironing equipment for each garment type'),
-                    _TimelineItem(5, 'Quality Check', 'Meticulous inspection of each item by experts'),
-                    _TimelineItem(6, 'Packing', 'Folded, Hanger or Vacuum packing as per your stated preference'),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFB100),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Text(
+                        'ABOUT US',
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 1),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Text(
+                      'Your Trusted Partner in\nLaundry Care.',
+                      style: GoogleFonts.playfairDisplay(
+                        fontSize: 48,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF1E293B),
+                        height: 1.1,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'We provide professional laundry and dry cleaning services with a focus on quality, convenience, and care. Our mission is to make your life easier by taking the burden of laundry off your shoulders.',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey.shade600,
+                        height: 1.6,
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    const _AboutFeatureItem(
+                      title: 'Passionate Expertise',
+                      desc: 'Our team consists of fabric care experts who treat every garment with the respect it deserves.',
+                    ),
+                    const SizedBox(height: 24),
+                    const _AboutFeatureItem(
+                      title: 'Cutting-Edge Technology',
+                      desc: 'We use the latest eco-friendly cleaning technology to ensure the best results for your clothes and the environment.',
+                    ),
+                    const SizedBox(height: 24),
+                    const _AboutFeatureItem(
+                      title: 'Customer-Centric Approach',
+                      desc: 'Everything we do is designed around your convenience, from easy scheduling to friendly service.',
+                    ),
                   ],
                 ),
               ),
@@ -338,53 +471,103 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
     );
   }
 
-  // More Reasons (RE-DESIGNED TO MATCH SCREENSHOT EXACTLY)
-  Widget _buildMoreReasonsSection(BuildContext context) {
+  Widget _buildHowItWorksSection(BuildContext context) {
+    final stages = [
+      {'title': 'Sorting & Inspection', 'desc': 'Segregation based on category and fabric carefully.', 'icon': Icons.shutter_speed, 'color': const Color(0xFF6366F1)},
+      {'title': 'Stain Treatment', 'desc': 'Italian spotting machines for expert removal.', 'icon': Icons.waves, 'color': const Color(0xFFEC4899)},
+      {'title': 'Processing', 'desc': 'German Eco-friendly cleaning solutions used.', 'icon': Icons.opacity, 'color': const Color(0xFF14B8A6)},
+      {'title': 'Finishing', 'desc': 'Unique Steam Ironing for each garment type.', 'icon': Icons.iron, 'color': const Color(0xFFF59E0B)},
+      {'title': 'Quality Check', 'desc': 'Meticulous inspection of item by expert team.', 'icon': Icons.fact_check, 'color': const Color(0xFF8B5CF6)},
+      {'title': 'Packing', 'desc': 'Vacuum packing for best protection of laundry.', 'icon': Icons.inventory_2, 'color': const Color(0xFF10B981)},
+    ];
+
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
-      color: const Color(0xFFF8FBEF), // Light Yellow/Green background from design
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+      color: const Color(0xFFF1F5F9), // Very light slate
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
-          child: Row(
+          constraints: const BoxConstraints(maxWidth: 1300),
+          child: Column(
             children: [
-              // Left side: Text
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'MORE REASONS TO EXPERIENCE\nOUR SERVICES',
-                      style: TextStyle(
-                        fontSize: 28, 
-                        fontWeight: FontWeight.bold, 
-                        color: Color(0xFF8A8DBA), // Purple/Violet title
-                        height: 1.2,
-                      ),
+              // Header
+              Column(
+                children: [
+                  Text(
+                    'OUR EXPERT PROCESS',
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF6366F1),
+                      letterSpacing: 2,
                     ),
-                    const SizedBox(height: 16),
-                    Container(width: 500, height: 1.5, color: Colors.grey.shade300),
-                    const SizedBox(height: 24),
-                    const _ReasonRow('Flat 20% Off On 1st Order'),
-                    const _ReasonRow('Attractive Membership Plans'),
-                    const _ReasonRow('Free Pick up & Drop'),
-                    const SizedBox(height: 16),
-                    Container(width: 500, height: 1.5, color: Colors.grey.shade300),
-                    const SizedBox(height: 48),
-                    const Text('Explore our Pricing & Offers', style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    '6 Stages of Perfection',
+                    style: GoogleFonts.playfairDisplay(
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF1E293B),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Specialized Machinery & Skilled Experts for each stage makes us the best.',
+                    style: TextStyle(fontSize: 18, color: Colors.grey.shade600),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 64),
+              // Stages Grid
+              Wrap(
+                spacing: 24,
+                runSpacing: 24,
+                alignment: WrapAlignment.center,
+                children: stages.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final stage = entry.value;
+                  return _ProcessStepCard(
+                    number: index + 1,
+                    title: stage['title'] as String,
+                    desc: stage['desc'] as String,
+                    icon: stage['icon'] as IconData,
+                    color: stage['color'] as Color,
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 64),
+              // Action Row
+              Container(
+                padding: const EdgeInsets.all(32),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [const Color(0xFF1E293B), const Color(0xFF334155)],
+                  ),
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 20, offset: const Offset(0, 10)),
                   ],
                 ),
-              ),
-              const SizedBox(width: 60),
-              // Right side: Image (Happy Woman with Laundry)
-              Expanded(
-                child: Center(
-                  child: Image.network(
-                    'https://images.unsplash.com/photo-1549439602-43ebca2327af?w=600', // Image of person with clean clothes
-                    height: 400,
-                    fit: BoxFit.contain,
-                    errorBuilder: (_, __, ___) => const Icon(Icons.person, size: 200, color: Colors.grey),
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Ready to experience Clino?',
+                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(width: 32),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF6366F1),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                        elevation: 0,
+                      ),
+                      child: const Text('Schedule Free Pickup', style: TextStyle(fontWeight: FontWeight.bold)),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -393,6 +576,110 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
       ),
     );
   }
+
+  Widget _buildMoreReasonsSection(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
+      decoration: const BoxDecoration(
+        color: Color(0xFFFDFCFB), // Very soft warm white
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFFFDFCFB), Color(0xFFF5F7FA)],
+        ),
+      ),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 1300),
+          child: Row(
+            children: [
+              // Left: High-end lifestyle image
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(40),
+                  child: Image.asset(
+                    'assets/images/c8736117bc600770c09c5d070437eb14 (1).jpg',
+                    height: 550,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 80),
+              // Right: Value Propositions
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'THE CLINO EXPERIENCE',
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF6366F1),
+                        letterSpacing: 3,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'More Reasons to\nExperience Us',
+                      style: GoogleFonts.playfairDisplay(
+                        fontSize: 52,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF1E293B),
+                        height: 1.1,
+                      ),
+                    ),
+                    const SizedBox(height: 48),
+                    // Value Cards
+                    _ValueReasonCard(
+                      icon: Icons.local_offer,
+                      title: 'Flat 20% Off On 1st Order',
+                      subtitle: 'Exclusively for our first-time users',
+                      badge: 'NEW USER',
+                      color: const Color(0xFF6366F1),
+                    ),
+                    const SizedBox(height: 20),
+                    _ValueReasonCard(
+                      icon: Icons.card_membership,
+                      title: 'Attractive Membership Plans',
+                      subtitle: 'Save more with our monthly packages',
+                      badge: 'BEST VALUE',
+                      color: const Color(0xFFEC4899),
+                    ),
+                    const SizedBox(height: 20),
+                    _ValueReasonCard(
+                      icon: Icons.delivery_dining,
+                      title: 'Free Pick up & Drop',
+                      subtitle: 'Doorstep service at your convenience',
+                      badge: 'FREE',
+                      color: const Color(0xFF14B8A6),
+                    ),
+                    const SizedBox(height: 48),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF1E293B),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 22),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                        elevation: 0,
+                      ),
+                      child: const Text(
+                        'Explore Our Pricing',
+                        style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
 
   Widget _buildSpotlightSection(BuildContext context) {
     final spotlightItems = [
@@ -404,30 +691,42 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
     ];
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 40),
-      color: const Color(0xFFF7F8FA),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+      color: const Color(0xFFF8FAFC), // Ultra light slate background
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
+          constraints: const BoxConstraints(maxWidth: 1250),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('In the Spotlight', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 32),
+              Text(
+                'In the Spotlight',
+                style: GoogleFonts.inter(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF475569), // Matches the image text color
+                  letterSpacing: -0.5,
+                ),
+              ),
+              const SizedBox(height: 50),
               Row(
-                children: spotlightItems.map((item) => Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 16),
-                    child: _SpotlightCard(
-                      title: item['title'] as String,
-                      subtitle: item['subtitle'] as String,
-                      color: item['color'] as Color,
-                      icon: item['icon'] as IconData,
-                      textColor: item['textColor'] as Color,
-                      onTap: () => context.push('/category/1', extra: item['title']),
+                children: spotlightItems.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final item = entry.value;
+                  return Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(right: index == spotlightItems.length - 1 ? 0 : 20),
+                      child: _SpotlightCard(
+                        title: item['title'] as String,
+                        subtitle: item['subtitle'] as String,
+                        icon: item['icon'] as IconData,
+                        baseColor: item['color'] as Color,
+                        textColor: item['textColor'] as Color,
+                        onTap: () => context.push('/category/${index + 1}'),
+                      ),
                     ),
-                  ),
-                )).toList(),
+                  );
+                }).toList(),
               ),
             ],
           ),
@@ -438,26 +737,75 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
 
   Widget _buildOffersSection(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 40),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 40), // User requested 10 padding
       color: Colors.white,
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text('Offers & Discounts', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 32),
-              Row(
-                children: [
-                   _OfferCard(Colors.blue, 'Laundry Special', '20% OFF'),
-                   const SizedBox(width: 16),
-                   _OfferCard(Colors.purple, 'New User', '₹100 OFF'),
-                   const SizedBox(width: 16),
-                   _OfferCard(Colors.green, 'Dry Clean', '30% OFF'),
-                ],
-              ),
-            ],
+          constraints: const BoxConstraints(maxWidth: 1300),
+          child: IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Left: Large Hero Banner
+                Expanded(
+                  flex: 3, // Roughly 60%
+                  child: _OfferHeroBanner(
+                    tagline: 'PREMIUM CARE.',
+                    title: 'Clino Luxuries:\nThe Silk Edit.',
+                    priceText: 'Starting at ₹299.00 or ₹49/mo.\nfor 6 mo. Footnote*',
+                    imageUrl: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?q=80&w=800&auto=format&fit=crop',
+                    btnText: 'EXPLORE NOW',
+                    onTap: () {},
+                  ),
+                ),
+                const SizedBox(width: 15),
+                // Right: 2x2 Grid of Small Banners
+                Expanded(
+                  flex: 2, // Roughly 40%
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Expanded(child: _SmallOfferCard(
+                              discount: '25% off',
+                              desc: 'Bring back the\nshine of your jewelry set',
+                              imageUrl: 'https://images.unsplash.com/photo-1515562141207-7a18b5ce7142?q=80&w=400&auto=format&fit=crop', // Jewelry/Watch style
+                              color: const Color(0xFFC084FC).withOpacity(0.2), // Light Purple
+                            )),
+                            const SizedBox(width: 15),
+                            Expanded(child: _SmallOfferCard(
+                              imageUrl: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=400&auto=format&fit=crop', // Accessories
+                              color: const Color(0xFF0F172A), // Dark Slate
+                              isDark: true,
+                            )),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Expanded(child: _SmallOfferCard(
+                              imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400&auto=format&fit=crop', // Shoes
+                              color: const Color(0xFF365314), // Dark Olive
+                              isDark: true,
+                            )),
+                            const SizedBox(width: 15),
+                            Expanded(child: _SmallOfferCard(
+                              title: 'SINGULARITY',
+                              subtitle: 'Well-Defined',
+                              imageUrl: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=400&auto=format&fit=crop', // High fashion
+                              color: const Color(0xFFFDE68A).withOpacity(0.3), // Light gold
+                            )),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -466,23 +814,91 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
 
   Widget _buildMostBookedSection(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 40),
-      color: const Color(0xFFF7F8FA),
+      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
+      color: const Color(0xFFF8FAFC), // Ultra light slate
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
+          constraints: const BoxConstraints(maxWidth: 1300),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Most Booked Services', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 32),
+              // Header with "View All"
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'CUSTOMER FAVORITES',
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF6366F1),
+                          letterSpacing: 2,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        'Most Booked Services',
+                        style: GoogleFonts.playfairDisplay(
+                          fontSize: 42,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF1E293B),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TextButton.icon(
+                    onPressed: () => context.push('/services'),
+                    icon: const Text('Explore All Services', style: TextStyle(fontWeight: FontWeight.bold)),
+                    label: const Icon(Icons.arrow_forward, size: 18),
+                    style: TextButton.styleFrom(
+                      foregroundColor: const Color(0xFF1E293B),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 50),
+              // Services Grid
               Row(
                 children: [
-                  Expanded(child: _buildSimpleServiceCard('Wash & Fold', 49, 4.8, 'https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=400')),
-                  const SizedBox(width: 16),
-                  Expanded(child: _buildSimpleServiceCard('Dry Cleaning', 149, 4.9, 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400')),
-                  const SizedBox(width: 16),
-                  Expanded(child: _buildSimpleServiceCard('Shoe Cleaning', 299, 4.7, 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400')),
+                  Expanded(child: _MostBookedServiceCard(
+                    name: 'Premium Wash & Fold',
+                    price: '49',
+                    rating: 4.8,
+                    reviews: '2.4k',
+                    imageUrl: 'https://images.unsplash.com/photo-1521335629791-ce4aec67dd15?q=80&w=800&auto=format&fit=crop',
+                    onTap: () {},
+                  )),
+                  const SizedBox(width: 25),
+                  Expanded(child: _MostBookedServiceCard(
+                    name: 'Express Dry Cleaning',
+                    price: '149',
+                    rating: 4.9,
+                    reviews: '1.8k',
+                    imageUrl: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?q=80&w=500&auto=format&fit=crop',
+                    onTap: () {},
+                  )),
+                  const SizedBox(width: 25),
+                  Expanded(child: _MostBookedServiceCard(
+                    name: 'Professional Shoe Spa',
+                    price: '299',
+                    rating: 4.7,
+                    reviews: '950',
+                    imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500&auto=format&fit=crop',
+                    onTap: () {},
+                  )),
+                  const SizedBox(width: 25),
+                  Expanded(child: _MostBookedServiceCard(
+                    name: 'Leather Jacket Gala',
+                    price: '999',
+                    rating: 5.0,
+                    reviews: '420',
+                    imageUrl: 'https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?q=80&w=800&auto=format&fit=crop',
+                    onTap: () {},
+                  )),
                 ],
               ),
             ],
@@ -492,45 +908,75 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
     );
   }
 
-  Widget _buildSimpleServiceCard(String name, int price, double rating, String imageUrl) {
-    return Container(
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)]),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(borderRadius: const BorderRadius.vertical(top: Radius.circular(16)), child: Image.network(imageUrl, height: 160, width: double.infinity, fit: BoxFit.cover)),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              const SizedBox(height: 8),
-              Text('₹$price', style: TextStyle(color: AppTheme.primary, fontWeight: FontWeight.bold, fontSize: 18)),
-            ]),
-          ),
-        ],
-      ),
-    );
-  }
+
+
 
   Widget _buildWhyChooseUsSection(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
-      color: Colors.white,
+      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
+      color: const Color(0xFFFDFCFB),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
+          constraints: const BoxConstraints(maxWidth: 1300),
           child: Column(
             children: [
-              const Text('Why Choose Us', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 16),
-              const Text('We provide the best care for your garments', style: TextStyle(fontSize: 16, color: Colors.grey)),
-              const SizedBox(height: 60),
+              Column(
+                children: [
+                   Text(
+                    'OUR COMMITMENT',
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF6366F1),
+                      letterSpacing: 2,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Why Choose Us',
+                    style: GoogleFonts.playfairDisplay(
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF1E293B),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'We provide the highest standards of care for your beloved garments.',
+                    style: TextStyle(fontSize: 18, color: Colors.grey.shade600),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 30),
               Row(
                 children: [
-                   Expanded(child: _WhyChooseItem(icon: Icons.verified, title: 'Quality Assurance', subtitle: 'Highest quality standards for your clothes')),
-                   Expanded(child: _WhyChooseItem(icon: Icons.access_time, title: 'On Time Delivery', subtitle: 'We respect your time and schedule')),
-                   Expanded(child: _WhyChooseItem(icon: Icons.eco, title: 'Eco Friendly', subtitle: 'Sustainable practices and non-toxic solvents')),
-                   Expanded(child: _WhyChooseItem(icon: Icons.attach_money, title: 'Affordable Pricing', subtitle: 'Premium service at competitive rates')),
+                   Expanded(child: _WhyChooseCard(
+                     icon: Icons.verified_user_rounded, 
+                     title: 'Quality Assurance', 
+                     subtitle: 'Highest quality standards for your premium clothes',
+                     color: const Color(0xFF6366F1),
+                   )),
+                   const SizedBox(width: 24),
+                   Expanded(child: _WhyChooseCard(
+                     icon: Icons.timer_rounded, 
+                     title: 'On Time Delivery', 
+                     subtitle: 'Reliable schedule that respects your precious time',
+                     color: const Color(0xFFEC4899),
+                   )),
+                   const SizedBox(width: 24),
+                   Expanded(child: _WhyChooseCard(
+                     icon: Icons.eco_rounded, 
+                     title: 'Eco Friendly', 
+                     subtitle: 'Sustainable practices and non-toxic cleaning agents',
+                     color: const Color(0xFF14B8A6),
+                   )),
+                   const SizedBox(width: 24),
+                   Expanded(child: _WhyChooseCard(
+                     icon: Icons.payments_rounded, 
+                     title: 'Fair Pricing', 
+                     subtitle: 'Premium laundry service at competitive market rates',
+                     color: const Color(0xFFF59E0B),
+                   )),
                 ],
               ),
             ],
@@ -542,124 +988,211 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
 
   Widget _buildTestimonialsSection(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
-      color: const Color(0xFFF7F8FA),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+      color: const Color(0xFF1E293B), // Premium dark mode for testimonials
       child: Center(
-         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 1300),
           child: Column(
             children: [
-              const Text('What Our Customers Say', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-               const SizedBox(height: 60),
-               Row(
-                 children: [
-                   Expanded(child: _TestimonialCard(name: 'Sarah J.', location: 'Mumbai', rating: 5, text: 'Absolutely love the service! My clothes have never looked better. The pickup and delivery is super convenient.')),
-                   const SizedBox(width: 24),
-                   Expanded(child: _TestimonialCard(name: 'Rahul M.', location: 'Bangalore', rating: 5, text: 'The 6 stage process really makes a difference. Stains I thought were permanent are gone. Highly recommended!')),
-                   const SizedBox(width: 24),
-                   Expanded(child: _TestimonialCard(name: 'Priya S.', location: 'Delhi', rating: 4, text: 'Great app experience and very professional staff. The real-time tracking helps me plan my day better.')),
-                 ],
-               ),
+              Column(
+                children: [
+                  Text(
+                    'REVIEWS',
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF818CF8),
+                      letterSpacing: 3,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'What Our Customers Say',
+                    style: GoogleFonts.playfairDisplay(
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(child: _PremiumTestimonialCard(
+                    name: 'Sarah J.', 
+                    location: 'Mumbai', 
+                    rating: 5, 
+                    text: 'Absolutely love the service! My clothes have never looked better. The pickup and delivery is super convenient.',
+                    avatarUrl: 'https://i.pravatar.cc/150?u=sarah',
+                  )),
+                  const SizedBox(width: 32),
+                  Expanded(child: _PremiumTestimonialCard(
+                    name: 'Rahul M.', 
+                    location: 'Bangalore', 
+                    rating: 5, 
+                    text: 'The 6 stage process really makes a difference. Stains I thought were permanent are gone. Highly recommended!',
+                    avatarUrl: 'https://i.pravatar.cc/150?u=rahul',
+                  )),
+                  const SizedBox(width: 32),
+                  Expanded(child: _PremiumTestimonialCard(
+                    name: 'Priya S.', 
+                    location: 'Delhi', 
+                    rating: 5, 
+                    text: 'Great app experience and very professional staff. The real-time tracking helps me plan my day better.',
+                    avatarUrl: 'https://i.pravatar.cc/150?u=priya',
+                  )),
+                ],
+              ),
             ],
           ),
-         ),
+        ),
       ),
     );
   }
 
   Widget _buildStatsAndDownloadSection(BuildContext context) {
     final stats = [
-      {'value': '50K+', 'label': 'Happy Customers'},
-      {'value': '1000+', 'label': 'Verified Professionals'},
-      {'value': '20+', 'label': 'Cities'},
-      {'value': '4.8', 'label': 'Average Rating'},
+      {'value': '50K+', 'label': 'Happy Customers', 'icon': Icons.people_alt_rounded},
+      {'value': '1000+', 'label': 'Verified Pros', 'icon': Icons.verified_user_rounded},
+      {'value': '20+', 'label': 'Cities Presence', 'icon': Icons.location_on_rounded},
+      {'value': '4.8', 'label': 'Average Rating', 'icon': Icons.star_rounded},
     ];
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
+      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 40),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
+          colors: [Color(0xFF0F172A), Color(0xFF1E293B), Color(0xFF334155)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
       ),
       child: Column(
         children: [
+          // Stats Row
           Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 1200),
+              constraints: const BoxConstraints(maxWidth: 1300),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: stats.map((s) => Column(
                   children: [
-                    Text(s['value']!, style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: Colors.white)),
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.05),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(s['icon'] as IconData, color: const Color(0xFF818CF8), size: 32),
+                    ),
+                    const SizedBox(height: 24),
+                    Text(
+                      s['value'] as String,
+                      style: GoogleFonts.inter(fontSize: 52, fontWeight: FontWeight.w900, color: Colors.white),
+                    ),
                     const SizedBox(height: 8),
-                    Text(s['label']!, style: TextStyle(fontSize: 16, color: Colors.white.withOpacity(0.9))),
+                    Text(
+                      s['label'] as String,
+                      style: GoogleFonts.inter(fontSize: 16, color: Colors.white.withOpacity(0.6), fontWeight: FontWeight.w500),
+                    ),
                   ],
                 )).toList(),
               ),
             ),
           ),
-          const SizedBox(height: 80),
+          const SizedBox(height: 50),
+          // App Download Row
           Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 1100),
+              constraints: const BoxConstraints(maxWidth: 1200),
               child: Row(
                 children: [
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(20),
+                        Text(
+                          'EXPERIENCE CLOUD WASH ON THE GO',
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFF818CF8),
+                            letterSpacing: 3,
                           ),
-                          child: const Text('📱 Mobile App', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
-                        ),
-                        const SizedBox(height: 24),
-                        const Text(
-                          'Get the Cloud Wash App',
-                          style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          'Schedule laundry pickups, track orders in real-time, and enjoy exclusive app-only discounts!',
-                          style: TextStyle(fontSize: 18, color: Colors.white.withOpacity(0.9), height: 1.6),
+                          'Your Personal Laundry\nManager in Your Pocket',
+                          style: GoogleFonts.playfairDisplay(
+                            fontSize: 48,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            height: 1.1,
+                          ),
                         ),
-                       const SizedBox(height: 32),
-                       Row(
-                         children: [
-                            _AppStoreBadge(icon: Icons.apple, text: 'App Store'),
-                            const SizedBox(width: 16),
-                            _AppStoreBadge(icon: Icons.android, text: 'Google Play'),
-                         ],
-                       ),
+                        const SizedBox(height: 24),
+                        Text(
+                          'Book, track, and manage your laundry needs with a single tap. Join 50,000+ happy users today.',
+                          style: TextStyle(fontSize: 18, color: Colors.white.withOpacity(0.7), height: 1.6),
+                        ),
+                        const SizedBox(height: 48),
+                        Row(
+                          children: [
+                            _AppStoreBadge(
+                              icon: Icons.apple, 
+                              text: 'App Store', 
+                              subtext: 'Download on the',
+                              color: Colors.white,
+                              onTap: () {},
+                            ),
+                            const SizedBox(width: 20),
+                            _AppStoreBadge(
+                              icon: Icons.play_arrow_rounded, 
+                              text: 'Google Play', 
+                              subtext: 'Get it on',
+                              color: Colors.white,
+                              onTap: () {},
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
-                  const SizedBox(width: 60),
-                  Container(
-                    width: 280,
-                    height: 500,
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(40),
-                      boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 30, offset: const Offset(0, 20))],
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(32)),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(32),
-                        child: Image.network(
-                          'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?w=600', // Cleaner phone UI stock image
-                          fit: BoxFit.cover,
+                  const SizedBox(width: 100),
+                  // App Mockup with floating effect
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        width: 400,
+                        height: 400,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF818CF8).withOpacity(0.1),
+                          shape: BoxShape.circle,
                         ),
                       ),
-                    ),
+                      Container(
+                        width: 320,
+                        height: 600,
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF0F172A),
+                          borderRadius: BorderRadius.circular(48),
+                          boxShadow: [
+                            BoxShadow(color: Colors.black.withOpacity(0.5), blurRadius: 40, offset: const Offset(0, 20)),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(36),
+                          child: Image.network(
+                            'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=800&auto=format&fit=crop',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -669,6 +1202,7 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
       ),
     );
   }
+
 
   Widget _buildFloatingWhatsAppButton() {
     return Container(
@@ -686,46 +1220,395 @@ class _FeatureBadge extends StatelessWidget {
   const _FeatureBadge({required this.icon, required this.text});
   @override
   Widget build(BuildContext context) {
-    return Row(children: [Icon(icon, size: 20, color: AppTheme.success), const SizedBox(width: 8), Text(text)]);
+    return Row(children: [Icon(icon, size: 20, color: AppTheme.primary), const SizedBox(width: 8), Text(text, style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w500))]);
   }
 }
 
 class _TrendingTag extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
-  const _TrendingTag(this.text, this.onTap);
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(onTap: onTap, child: Container(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6), margin: const EdgeInsets.only(right: 8), decoration: BoxDecoration(color: Colors.grey.shade100, borderRadius: BorderRadius.circular(16)), child: Text(text)));
-  }
-}
-
-class _CategoryCard extends StatelessWidget {
-  final String name;
-  final IconData icon;
-  final Color bgColor;
-  final VoidCallback onTap;
-  const _CategoryCard({required this.name, required this.icon, required this.bgColor, required this.onTap});
+  final IconData? icon;
+  const _TrendingTag(this.text, this.onTap, {this.icon});
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Container(width: 200, padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(16)), child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(icon, size: 40), const SizedBox(height: 12), Text(name, textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.bold))])),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8), 
+        margin: const EdgeInsets.only(right: 12), 
+        decoration: BoxDecoration(
+          gradient: LinearGradient(colors: [AppTheme.primary, AppTheme.primaryDark]), // Dark Gradient
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(color: AppTheme.primary.withOpacity(0.3), blurRadius: 8, offset: const Offset(0, 4)),
+          ],
+        ), 
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (icon != null) ...[
+              Icon(icon, size: 16, color: AppTheme.accent), // Gold Icon
+              const SizedBox(width: 8),
+            ],
+            Text(text, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600)), // White Text
+          ],
+        ),
+      ),
     );
   }
 }
 
-class _SpotlightCard extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final Color color;
+class _CategoryCard extends StatefulWidget {
+  final String name;
   final IconData icon;
-  final Color textColor;
+  final Color cardColor;
+  final String itemCount;
+  final String? imagePath;
   final VoidCallback onTap;
-  const _SpotlightCard({required this.title, required this.subtitle, required this.color, required this.icon, required this.textColor, required this.onTap});
+  const _CategoryCard({required this.name, required this.icon, required this.cardColor, required this.itemCount, this.imagePath, required this.onTap, Key? key}) : super(key: key);
+
+  @override
+  State<_CategoryCard> createState() => _CategoryCardState();
+}
+
+class _CategoryCardState extends State<_CategoryCard> {
+  bool isHovered = false;
+
   @override
   Widget build(BuildContext context) {
-    return InkWell(onTap: onTap, child: Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(16)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Icon(icon, color: textColor), const SizedBox(height: 12), Text(title, style: TextStyle(color: textColor, fontWeight: FontWeight.bold)), Text(subtitle, style: TextStyle(color: textColor.withOpacity(0.8), fontSize: 12))])));
+    return MouseRegion(
+      onEnter: (_) => setState(() => isHovered = true),
+      onExit: (_) => setState(() => isHovered = false),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeOut,
+          width: 180,
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: isHovered ? Colors.purple.shade300 : Colors.transparent,
+              width: 2,
+            ),
+            boxShadow: isHovered ? [
+              BoxShadow(
+                color: Colors.purple.withOpacity(0.1),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
+              ),
+            ] : [],
+          ), 
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Circular Icon Container
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: widget.cardColor,
+                ),
+                child: Center(
+                  child: widget.imagePath != null 
+                    ? ClipOval(child: Image.asset(widget.imagePath!, width: 50, height: 50, fit: BoxFit.contain))
+                    : Icon(widget.icon, size: 36, color: const Color(0xFF2D3748)),
+                ),
+              ),
+              const SizedBox(height: 16),
+              // Category Name
+              Text(
+                widget.name, 
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontWeight: isHovered ? FontWeight.bold : FontWeight.w600, 
+                  fontSize: 14,
+                  color: isHovered ? Colors.purple.shade700 : const Color(0xFF2D3748),
+                ),
+              ),
+              const SizedBox(height: 4),
+              // Item Count
+              Text(
+                widget.itemCount, 
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey.shade500,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// Simple Category Item for grid layout (no card, just icon + text)
+class _CategoryItem extends StatefulWidget {
+  final String name;
+  final String count;
+  final IconData icon;
+  final Color iconColor;
+  final String? imagePath;
+  final VoidCallback onTap;
+  const _CategoryItem({required this.name, required this.count, required this.icon, required this.iconColor, this.imagePath, required this.onTap});
+
+  @override
+  State<_CategoryItem> createState() => _CategoryItemState();
+}
+
+class _CategoryItemState extends State<_CategoryItem> {
+  bool isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => isHovered = true),
+      onExit: (_) => setState(() => isHovered = false),
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          transform: Matrix4.translationValues(0, isHovered ? -10 : 0, 0),
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: isHovered 
+                    ? widget.iconColor.withOpacity(0.3) 
+                    : Colors.black.withOpacity(0.04),
+                blurRadius: isHovered ? 25 : 15,
+                offset: Offset(0, isHovered ? 12 : 6),
+              ),
+            ],
+            border: Border.all(
+              color: isHovered ? widget.iconColor.withOpacity(0.2) : Colors.transparent,
+              width: 1.5,
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Circular Icon Background
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                width: 75,
+                height: 75,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: isHovered ? widget.iconColor.withOpacity(0.3) : widget.iconColor.withOpacity(0.15),
+                ),
+                child: Center(
+                  child: widget.imagePath != null 
+                    ? Image.asset(
+                        widget.imagePath!, 
+                        width: 48, 
+                        height: 48, 
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(widget.icon, size: 34, color: widget.iconColor);
+                        },
+                      )
+                    : Icon(widget.icon, size: 34, color: widget.iconColor),
+                ),
+              ),
+              const SizedBox(height: 18),
+              // Name
+              Text(
+                widget.name, 
+                textAlign: TextAlign.center,
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.bold, 
+                  fontSize: 15,
+                  color: const Color(0xFF1E293B),
+                ),
+              ),
+              const SizedBox(height: 6),
+              // Count
+              Text(
+                widget.count, 
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey.shade500,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SpotlightCard extends StatefulWidget {
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final Color baseColor;
+  final Color textColor;
+  final VoidCallback onTap;
+
+  const _SpotlightCard({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.baseColor,
+    required this.textColor,
+    required this.onTap,
+  });
+
+  @override
+  State<_SpotlightCard> createState() => _SpotlightCardState();
+}
+
+class _SpotlightCardState extends State<_SpotlightCard> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  bool _isHovered = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 10),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          height: 180,
+          transform: Matrix4.translationValues(0, _isHovered ? -10 : 0, 0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                widget.baseColor.withOpacity(0.95),
+                widget.baseColor.withAlpha(200),
+              ],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: widget.baseColor.withOpacity(_isHovered ? 0.4 : 0.1),
+                blurRadius: _isHovered ? 30 : 15,
+                offset: Offset(0, _isHovered ? 15 : 5),
+              ),
+            ],
+          ),
+          child: Stack(
+            clipBehavior: Clip.antiAlias,
+            children: [
+              // Animated Background Bubbles
+              _MovingBubble(controller: _controller, size: 80, x: 0.1, y: 0.2, color: Colors.white24),
+              _MovingBubble(controller: _controller, size: 60, x: 0.8, y: 0.7, color: Colors.white12),
+              
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Icon with soft background
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(widget.icon, color: widget.textColor, size: 28),
+                    ),
+                    const Spacer(),
+                    // Title
+                    Text(
+                      widget.title,
+                      style: GoogleFonts.inter(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: widget.textColor,
+                        letterSpacing: -0.3,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    // Subtitle
+                    Text(
+                      widget.subtitle,
+                      style: GoogleFonts.inter(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        color: widget.textColor.withOpacity(0.7),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _MovingBubble extends StatelessWidget {
+  final AnimationController controller;
+  final double size;
+  final double x;
+  final double y;
+  final Color color;
+
+  const _MovingBubble({
+    required this.controller,
+    required this.size,
+    required this.x,
+    required this.y,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, child) {
+        final sinVal = (math.sin(controller.value * 2 * math.pi) + 1) / 2;
+        return Positioned(
+          left: (x * 200) + (math.sin(controller.value * 6.28) * 20),
+          top: (y * 150) + (math.cos(controller.value * 6.28) * 15),
+          child: Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: color,
+            ),
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -740,34 +1623,116 @@ class _OfferCard extends StatelessWidget {
   }
 }
 
-class _TimelineItem extends StatelessWidget {
+class _ProcessStepCard extends StatefulWidget {
   final int number;
   final String title;
   final String desc;
-  const _TimelineItem(this.number, this.title, this.desc);
+  final IconData icon;
+  final Color color;
+
+  const _ProcessStepCard({
+    required this.number,
+    required this.title,
+    required this.desc,
+    required this.icon,
+    required this.color,
+  });
+
+  @override
+  State<_ProcessStepCard> createState() => _ProcessStepCardState();
+}
+
+class _ProcessStepCardState extends State<_ProcessStepCard> {
+  bool _isHovered = false;
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 24),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 36, height: 36,
-            decoration: const BoxDecoration(color: Color(0xFF4AC3F5), shape: BoxShape.circle),
-            child: Center(child: Text('$number', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold))),
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        width: 380,
+        height: 180,
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: _isHovered ? widget.color.withOpacity(0.3) : Colors.transparent,
+            width: 2,
           ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          boxShadow: [
+            BoxShadow(
+              color: _isHovered ? widget.color.withOpacity(0.1) : Colors.black.withOpacity(0.03),
+              blurRadius: _isHovered ? 25 : 15,
+              offset: Offset(0, _isHovered ? 12 : 6),
+            ),
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Number and Icon
+            Column(
               children: [
-                Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFF4A4A4A))),
-                Text(desc, style: TextStyle(fontSize: 13, color: Colors.grey.shade600)),
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: _isHovered ? widget.color : widget.color.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Center(
+                    child: Icon(
+                      widget.icon,
+                      color: _isHovered ? Colors.white : widget.color,
+                      size: 28,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  '${widget.number.toString().padLeft(2, '0')}',
+                  style: GoogleFonts.inter(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w900,
+                    color: widget.color.withOpacity(0.15),
+                  ),
+                ),
               ],
             ),
-          ),
-        ],
+            const SizedBox(width: 24),
+            // Text Content
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 4),
+                  Text(
+                    widget.title,
+                    style: GoogleFonts.inter(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF1E293B),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    widget.desc,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey.shade600,
+                      height: 1.5,
+                    ),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -787,15 +1752,115 @@ class _ProcessButton extends StatelessWidget {
   }
 }
 
-class _ReasonRow extends StatelessWidget {
-  final String text;
-  const _ReasonRow(this.text);
+class _ValueReasonCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final String badge;
+  final Color color;
+
+  const _ValueReasonCard({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.badge,
+    required this.color,
+  });
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Text(text, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF4A4A4A))),
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10, offset: const Offset(0, 4)),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: color, size: 24),
+          ),
+          const SizedBox(width: 20),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFF1E293B)),
+                    ),
+                    const SizedBox(width: 12),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: color.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        badge,
+                        style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 10),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
+  }
+}
+
+
+Color _getPremiumCategoryColor(String name) {
+  // Electric Lime (Cyber Neon)
+  return const Color(0xFFCCFF00); 
+}
+
+// Soft pastel colors matching reference design
+Color _getCardColor(int index) {
+  final colors = [
+    const Color(0xFFE8F4FD), // Soft Blue
+    const Color(0xFFFFF3E0), // Soft Cream
+    const Color(0xFFE8F5E9), // Soft Mint
+    const Color(0xFFFCE4EC), // Soft Pink
+    const Color(0xFFE0F7FA), // Soft Cyan
+    const Color(0xFFF3E5F5), // Soft Lavender
+    const Color(0xFFFFF9C4), // Soft Yellow
+    const Color(0xFFF1F8E9), // Soft Lime
+    const Color(0xFFE1F5FE), // Soft Sky
+    const Color(0xFFFBE9E7), // Soft Deep Orange
+  ];
+  return colors[index % colors.length];
+}
+
+// Get custom Flaticon image path for category (null = use default Material icon)
+String? _getCategoryImagePath(String name) {
+  switch (name.toLowerCase()) {
+    case 'laundry': return 'assets/images/icons/laundry.png';
+    case 'dry cleaning': return 'assets/images/icons/dry_cleaning.png';
+    case 'shoe cleaning': return 'assets/images/icons/shoe_cleaning.png';
+    case 'leather cleaning': return 'assets/images/icons/leather_cleaning.png';
+    case 'curtain cleaning': return 'assets/images/icons/curtain_cleaning.png';
+    case 'carpet cleaning': return 'assets/images/icons/carpet_cleaning.png';
+    // Add more as you upload more icons:
+    default: return null; // Use Material icon
   }
 }
 
@@ -818,10 +1883,864 @@ class _TestimonialCard extends StatelessWidget {
   Widget build(BuildContext context) { return Container(padding: const EdgeInsets.all(24), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))]), child: Column(children: [Row(mainAxisAlignment: MainAxisAlignment.center, children: List.generate(5, (index) => Icon(index < rating ? Icons.star : Icons.star_border, color: Colors.amber, size: 20))), const SizedBox(height: 16), Text('"$text"', textAlign: TextAlign.center, style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 14)), const SizedBox(height: 16), Text(name, style: const TextStyle(fontWeight: FontWeight.bold)), Text(location, style: const TextStyle(fontSize: 12, color: Colors.grey))])); }
 }
 
+class _BigOfferBanner extends StatelessWidget {
+  final Color color;
+  final String title;
+  final String subtitle;
+  final String discount;
+  final String imageUrl;
+
+  const _BigOfferBanner({
+    required this.color,
+    required this.title,
+    required this.subtitle,
+    required this.discount,
+    required this.imageUrl,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [BoxShadow(color: color.withOpacity(0.3), blurRadius: 20, offset: const Offset(0, 10))],
+      ),
+      clipBehavior: Clip.antiAlias, // Clip image
+      child: Row(
+        children: [
+          // Left Side: Content
+          Expanded(
+            flex: 3,
+            child: Container(
+              padding: const EdgeInsets.all(24), // Reduced from 32
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [color, color.withOpacity(0.8)],
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min, // Minimize column height
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)),
+                    child: Text(discount, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 12)),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(title, style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 6),
+                  Text(subtitle, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white, fontSize: 13, height: 1.3)),
+                  const SizedBox(height: 12),
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: color,
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    ),
+                    child: const Text('Claim', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+                  )
+                ],
+              ),
+            ),
+          ),
+          // Right Side: Image
+          Expanded(
+            flex: 2,
+            child: Image.network(
+              imageUrl,
+              height: double.infinity,
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => Container(color: Colors.white24, child: const Icon(Icons.image, color: Colors.white)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _AppStoreBadge extends StatelessWidget {
   final IconData icon;
   final String text;
-  const _AppStoreBadge({required this.icon, required this.text});
+  final String subtext;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _AppStoreBadge({
+    required this.icon, 
+    required this.text,
+    required this.subtext,
+    required this.color,
+    required this.onTap,
+  });
+
   @override
-  Widget build(BuildContext context) { return Container(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(30)), child: Row(children: [Icon(icon, color: Colors.black), const SizedBox(width: 8), Text(text, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold))])); }
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.8),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.white.withOpacity(0.2)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, color: Colors.white, size: 28),
+            const SizedBox(width: 12),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  subtext,
+                  style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 10, fontWeight: FontWeight.w500),
+                ),
+                Text(
+                  text,
+                  style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// Animated Bubble Widget with floating effect
+class _AnimatedBubble extends StatefulWidget {
+  final double size;
+  final Color color;
+  final double delay;
+  const _AnimatedBubble({required this.size, required this.color, required this.delay});
+
+  @override
+  State<_AnimatedBubble> createState() => _AnimatedBubbleState();
+}
+
+class _AnimatedBubbleState extends State<_AnimatedBubble> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 4),
+      vsync: this,
+    );
+    _animation = Tween<double>(begin: 0, end: 20).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+    Future.delayed(Duration(milliseconds: (widget.delay * 1000).toInt()), () {
+      if (mounted) _controller.repeat(reverse: true);
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (context, child) {
+        return Transform.translate(
+          offset: Offset(0, _animation.value),
+          child: Container(
+            width: widget.size,
+            height: widget.size,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: RadialGradient(
+                colors: [widget.color, widget.color.withOpacity(0)],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+// Stat Card Widget
+class _StatCard extends StatelessWidget {
+  final String value;
+  final String label;
+  final IconData icon;
+  const _StatCard({required this.value, required this.label, required this.icon});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.9),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 15, offset: const Offset(0, 5))],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.blue.shade50,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(icon, color: Colors.blue.shade600, size: 22),
+          ),
+          const SizedBox(width: 14),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(value, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF1E293B))),
+              Text(label, style: TextStyle(fontSize: 13, color: Colors.grey.shade600)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ShiningStars extends StatelessWidget {
+  const _ShiningStars();
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Icon(Icons.auto_awesome, color: Color(0xFFFFB100), size: 32),
+        const SizedBox(width: 8),
+        Icon(Icons.auto_awesome, color: const Color(0xFFFFB100).withOpacity(0.6), size: 24),
+      ],
+    );
+  }
+}
+
+class _RoundedImage extends StatelessWidget {
+  final String imageUrl;
+  final double width;
+  final double height;
+  const _RoundedImage({required this.imageUrl, required this.width, required this.height});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 30,
+            offset: const Offset(0, 15),
+          ),
+        ],
+        image: DecorationImage(
+          image: NetworkImage(imageUrl),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+}
+
+class _AboutFeatureItem extends StatelessWidget {
+  final String title;
+  final String desc;
+  const _AboutFeatureItem({required this.title, required this.desc});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(4),
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: Color(0xFFFFB100),
+          ),
+          child: const Icon(Icons.check, color: Colors.white, size: 16),
+        ),
+        const SizedBox(width: 20),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1E293B),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                desc,
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.grey.shade600,
+                  height: 1.5,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+class _OfferHeroBanner extends StatelessWidget {
+  final String tagline;
+  final String title;
+  final String priceText;
+  final String imageUrl;
+  final String btnText;
+  final VoidCallback onTap;
+
+  const _OfferHeroBanner({
+    required this.tagline,
+    required this.title,
+    required this.priceText,
+    required this.imageUrl,
+    required this.btnText,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        image: DecorationImage(
+          image: NetworkImage(imageUrl),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(50),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Colors.white.withOpacity(0.9),
+              Colors.white.withOpacity(0.4),
+              Colors.transparent,
+            ],
+            stops: const [0.0, 0.4, 1.0],
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              tagline,
+              style: GoogleFonts.inter(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF1E3A5F),
+                letterSpacing: 2,
+              ),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              title,
+              style: GoogleFonts.playfairDisplay(
+                fontSize: 52,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF1E293B),
+                height: 1.1,
+              ),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              priceText,
+              style: GoogleFonts.inter(
+                fontSize: 16,
+                color: Colors.grey.shade700,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 48),
+            ElevatedButton(
+              onPressed: onTap,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF134E4A),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 22),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                elevation: 0,
+              ),
+              child: Text(
+                btnText,
+                style: const TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SmallOfferCard extends StatelessWidget {
+  final String? discount;
+  final String? desc;
+  final String? title;
+  final String? subtitle;
+  final String imageUrl;
+  final Color color;
+  final bool isDark;
+
+  const _SmallOfferCard({
+    this.discount,
+    this.desc,
+    this.title,
+    this.subtitle,
+    required this.imageUrl,
+    required this.color,
+    this.isDark = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(20),
+        image: DecorationImage(
+          image: NetworkImage(imageUrl),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.black.withOpacity(isDark ? 0.3 : 0.0),
+              Colors.black.withOpacity(isDark ? 0.6 : 0.1),
+            ],
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (discount != null) ...[
+              Text(
+                'upto',
+                style: TextStyle(color: isDark ? Colors.white70 : Colors.black54, fontSize: 12),
+              ),
+              Text(
+                discount!,
+                style: GoogleFonts.playfairDisplay(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: isDark ? Colors.white : Colors.black87,
+                ),
+              ),
+            ],
+            if (desc != null) ...[
+              const SizedBox(height: 8),
+              Text(
+                desc!,
+                style: TextStyle(
+                  color: isDark ? Colors.white70 : Colors.black54,
+                  fontSize: 13,
+                  height: 1.4,
+                ),
+              ),
+            ],
+            if (title != null) ...[
+              Text(
+                title!,
+                style: GoogleFonts.inter(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: isDark ? Colors.white : Colors.black87,
+                  letterSpacing: 1,
+                ),
+              ),
+              if (subtitle != null) ...[
+                const SizedBox(height: 4),
+                Text(
+                  subtitle!,
+                  style: GoogleFonts.playfairDisplay(
+                    fontSize: 16,
+                    fontStyle: FontStyle.italic,
+                    color: isDark ? Colors.white70 : Colors.black54,
+                  ),
+                ),
+              ],
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+class _MostBookedServiceCard extends StatefulWidget {
+  final String name;
+  final String price;
+  final double rating;
+  final String reviews;
+  final String imageUrl;
+  final VoidCallback onTap;
+
+  const _MostBookedServiceCard({
+    required this.name,
+    required this.price,
+    required this.rating,
+    required this.reviews,
+    required this.imageUrl,
+    required this.onTap,
+  });
+
+  @override
+  State<_MostBookedServiceCard> createState() => _MostBookedServiceCardState();
+}
+
+class _MostBookedServiceCardState extends State<_MostBookedServiceCard> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(_isHovered ? 0.12 : 0.05),
+                blurRadius: _isHovered ? 30 : 20,
+                offset: Offset(0, _isHovered ? 15 : 10),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Image and Rating Overlay
+              Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                    child: Image.network(
+                      widget.imageUrl,
+                      height: 220,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Positioned(
+                    top: 15,
+                    left: 15,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.star, color: Colors.amber, size: 16),
+                          const SizedBox(width: 4),
+                          Text(
+                            widget.rating.toString(),
+                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                          ),
+                          Text(
+                            ' (${widget.reviews})',
+                            style: TextStyle(color: Colors.grey.shade600, fontSize: 11),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.name,
+                      style: GoogleFonts.inter(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF1E293B),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Starting from',
+                              style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+                            ),
+                            Text(
+                              '₹${widget.price}',
+                              style: GoogleFonts.inter(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: const Color(0xFF6366F1),
+                              ),
+                            ),
+                          ],
+                        ),
+                        AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: _isHovered ? const Color(0xFF6366F1) : const Color(0xFFF1F5F9),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.add,
+                            color: _isHovered ? Colors.white : const Color(0xFF6366F1),
+                            size: 20,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    // "Book Now" that appears or changes style
+                    SizedBox(
+                      width: double.infinity,
+                      child: TextButton(
+                        onPressed: widget.onTap,
+                        style: TextButton.styleFrom(
+                          backgroundColor: _isHovered ? const Color(0xFF1E293B) : Colors.transparent,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            side: BorderSide(
+                              color: _isHovered ? Colors.transparent : Colors.grey.shade200,
+                            ),
+                          ),
+                        ),
+                        child: Text(
+                          'Book Now',
+                          style: TextStyle(
+                            color: _isHovered ? Colors.white : const Color(0xFF1E293B),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+class _WhyChooseCard extends StatefulWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final Color color;
+
+  const _WhyChooseCard({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.color,
+  });
+
+  @override
+  State<_WhyChooseCard> createState() => _WhyChooseCardState();
+}
+
+class _WhyChooseCardState extends State<_WhyChooseCard> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        padding: const EdgeInsets.all(32),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: _isHovered ? widget.color.withOpacity(0.12) : Colors.black.withOpacity(0.02),
+              blurRadius: _isHovered ? 30 : 15,
+              offset: Offset(0, _isHovered ? 12 : 6),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: _isHovered ? widget.color : widget.color.withOpacity(0.08),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                widget.icon,
+                color: _isHovered ? Colors.white : widget.color,
+                size: 32,
+              ),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              widget.title,
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                color: const Color(0xFF1E293B),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              widget.subtitle,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.grey.shade600,
+                fontSize: 14,
+                height: 1.5,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PremiumTestimonialCard extends StatelessWidget {
+  final String name;
+  final String location;
+  final int rating;
+  final String text;
+  final String avatarUrl;
+
+  const _PremiumTestimonialCard({
+    required this.name,
+    required this.location,
+    required this.rating,
+    required this.text,
+    required this.avatarUrl,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(32),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Colors.white.withOpacity(0.1)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 25,
+                backgroundImage: NetworkImage(avatarUrl),
+              ),
+              const SizedBox(width: 16),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  Text(
+                    location,
+                    style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 13),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          Row(
+            children: List.generate(5, (index) => Icon(
+              index < rating ? Icons.star_rounded : Icons.star_outline_rounded,
+              color: Colors.amber,
+              size: 18,
+            )),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            '"$text"',
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.8),
+              fontSize: 15,
+              fontStyle: FontStyle.italic,
+              height: 1.6,
+            ),
+          ),
+          const SizedBox(height: 24),
+          Row(
+            children: [
+              Icon(Icons.verified_rounded, color: Colors.blue.shade400, size: 16),
+              const SizedBox(width: 8),
+              Text(
+                'Verified Customer',
+                style: TextStyle(color: Colors.blue.shade400, fontSize: 12, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }

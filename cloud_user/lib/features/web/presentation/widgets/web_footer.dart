@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class WebFooter extends StatelessWidget {
   const WebFooter({super.key});
@@ -7,17 +7,17 @@ class WebFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xFF1E1E1E),
-      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 40),
+      color: const Color(0xFF0F172A), // Deep Slate
+      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 40),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
+          constraints: const BoxConstraints(maxWidth: 1300),
           child: Column(
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Company Info
+                  // Brand Column
                   Expanded(
                     flex: 2,
                     child: Column(
@@ -25,93 +25,128 @@ class WebFooter extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            const Icon(Icons.local_laundry_service, color: Colors.white, size: 32),
-                            const SizedBox(width: 12),
-                            const Text(
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF818CF8),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: const Icon(Icons.waves_rounded, color: Colors.white, size: 28),
+                            ),
+                            const SizedBox(width: 16),
+                            Text(
                               'Cloud Wash',
-                              style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                              style: GoogleFonts.inter(
+                                color: Colors.white,
+                                fontSize: 28,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: -0.5,
+                              ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 24),
-                        Text(
-                          'Your trusted partner for premium laundry and dry cleaning services. We prioritize quality, hygiene, and timely delivery.',
-                          style: TextStyle(color: Colors.grey.shade400, height: 1.6),
-                        ),
                         const SizedBox(height: 32),
+                        Text(
+                          'Redefining premium garment care with technology and craftsmanship. Your wardrobe deserves nothing but the best.',
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.5),
+                            fontSize: 16,
+                            height: 1.8,
+                          ),
+                        ),
+                        const SizedBox(height: 48),
                         Row(
                           children: [
-                            _SocialIcon(Icons.facebook),
-                            _SocialIcon(Icons.camera_alt),
-                            _SocialIcon(Icons.alternate_email),
+                            _SocialButton(icon: Icons.facebook_rounded, color: const Color(0xFF3B82F6)),
+                            const SizedBox(width: 12),
+                            _SocialButton(icon: Icons.camera_alt_rounded, color: const Color(0xFFEC4899)),
+                            const SizedBox(width: 12),
+                            _SocialButton(icon: Icons.alternate_email_rounded, color: const Color(0xFF10B981)),
                           ],
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(width: 80),
+                  const SizedBox(width: 100),
                   
-                  // Quick Links
+                  // Navigation Links
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Quick Links', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 24),
-                        _FooterLink('Home', onTap: () => context.go('/')),
-                        _FooterLink('About Us', onTap: () => context.go('/about')),
-                        _FooterLink('Blog', onTap: () => context.go('/blog')),
-                        _FooterLink('My Bookings', onTap: () => context.go('/bookings')),
-                        _FooterLink('Reviews', onTap: () => context.go('/reviews')),
-                        _FooterLink('Contact', onTap: () => context.go('/contact')),
+                    child: _FooterColumn(
+                      title: 'EXPLORE',
+                      links: [
+                        {'label': 'Home', 'route': '/'},
+                        {'label': 'About Us', 'route': '/about'},
+                        {'label': 'Services', 'route': '/services'},
+                        {'label': 'Membership', 'route': '/membership'},
+                        {'label': 'Blog', 'route': '/blog'},
                       ],
                     ),
                   ),
                   
-                  // Services
+                  // Services Links
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Services', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 24),
-                        _FooterLink('Dry Cleaning', onTap: () => context.go('/services')),
-                        _FooterLink('Steam Ironing', onTap: () => context.go('/services')),
-                        _FooterLink('Shoe Care', onTap: () => context.go('/services')),
-                        _FooterLink('Carpet Cleaning', onTap: () => context.go('/services')),
+                    child: _FooterColumn(
+                      title: 'SERVICES',
+                      links: [
+                        {'label': 'Dry Cleaning', 'route': '/services'},
+                        {'label': 'Wash & Fold', 'route': '/services'},
+                        {'label': 'Shoe Restoration', 'route': '/services'},
+                        {'label': 'Leather Care', 'route': '/services'},
+                        {'label': 'Steam Ironing', 'route': '/services'},
                       ],
                     ),
                   ),
                   
-                  // Contact
+                  // Support Column
                   Expanded(
+                    flex: 1,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Contact Us', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 24),
-                        _ContactRow(Icons.phone, '+91 98765 43210'),
-                        const SizedBox(height: 16),
-                        _ContactRow(Icons.email, 'support@cloudwash.com'),
-                        const SizedBox(height: 16),
-                        _ContactRow(Icons.location_on, '123, Laundry Lane, Bangalore'),
+                        Text(
+                          'CONTACT',
+                          style: GoogleFonts.inter(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 2,
+                          ),
+                        ),
+                        const SizedBox(height: 32),
+                        _ContactItem(icon: Icons.phone_rounded, text: '+91 98765 43210'),
+                        const SizedBox(height: 20),
+                        _ContactItem(icon: Icons.email_rounded, text: 'hello@cloudwash.com'),
+                        const SizedBox(height: 20),
+                        _ContactItem(
+                          icon: Icons.location_on_rounded, 
+                          text: 'Suite 402, Laundry Lane,\nBangalore, KA 560001',
+                        ),
                       ],
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 60),
-              Divider(color: Colors.grey.shade800),
-              const SizedBox(height: 32),
+              const SizedBox(height: 20),
+              Container(
+                height: 1,
+                width: double.infinity,
+                color: Colors.white.withOpacity(0.05),
+              ),
+              const SizedBox(height: 48),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('© 2025 Cloud Wash. All rights reserved.', style: TextStyle(color: Colors.grey.shade600)),
+                  Text(
+                    '© 2025 Cloud Wash. Crafted with precision.',
+                    style: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 14),
+                  ),
                   Row(
                     children: [
-                      _FooterLink('Privacy Policy', onTap: () => context.go('/privacy')),
-                      const SizedBox(width: 24),
-                      _FooterLink('Terms of Service', onTap: () => context.go('/terms')),
+                      _MinimalLink('Privacy Policy'),
+                      const SizedBox(width: 32),
+                      _MinimalLink('Terms of Service'),
+                      const SizedBox(width: 32),
+                      _MinimalLink('Sitemap'),
                     ],
                   ),
                 ],
@@ -124,63 +159,131 @@ class WebFooter extends StatelessWidget {
   }
 }
 
-class _SocialIcon extends StatelessWidget {
-  final IconData icon;
-  const _SocialIcon(this.icon);
+
+class _FooterColumn extends StatelessWidget {
+  final String title;
+  final List<Map<String, String>> links;
+  const _FooterColumn({required this.title, required this.links});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(right: 16),
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
-        shape: BoxShape.circle,
-      ),
-      child: Icon(icon, color: Colors.white, size: 20),
-    );
-  }
-}
-
-class _FooterLink extends StatelessWidget {
-  final String text;
-  final VoidCallback onTap;
-  const _FooterLink(this.text, {required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: InkWell(
-        onTap: onTap,
-        child: Text(
-          text,
-          style: TextStyle(color: Colors.grey.shade400, fontSize: 14),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: GoogleFonts.inter(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 2,
+          ),
         ),
+        const SizedBox(height: 12),
+        ...links.map((link) => Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: _FooterLink(link['label']!),
+        )).toList(),
+      ],
+    );
+  }
+}
+
+class _FooterLink extends StatefulWidget {
+  final String label;
+  const _FooterLink(this.label);
+
+  @override
+  State<_FooterLink> createState() => _FooterLinkState();
+}
+
+class _FooterLinkState extends State<_FooterLink> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedDefaultTextStyle(
+        duration: const Duration(milliseconds: 200),
+        style: TextStyle(
+          color: _isHovered ? const Color(0xFF818CF8) : Colors.white.withOpacity(0.5),
+          fontSize: 15,
+          fontWeight: _isHovered ? FontWeight.bold : FontWeight.normal,
+        ),
+        child: Text(widget.label),
       ),
     );
   }
 }
 
-class _ContactRow extends StatelessWidget {
+class _ContactItem extends StatelessWidget {
   final IconData icon;
   final String text;
-  const _ContactRow(this.icon, this.text);
+  const _ContactItem({required this.icon, required this.text});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, color: Colors.white, size: 18),
-        const SizedBox(width: 12),
+        Icon(icon, color: const Color(0xFF818CF8), size: 20),
+        const SizedBox(width: 16),
         Expanded(
           child: Text(
             text,
-            style: TextStyle(color: Colors.grey.shade400, fontSize: 14),
+            style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 15, height: 1.5),
           ),
         ),
       ],
+    );
+  }
+}
+
+class _SocialButton extends StatefulWidget {
+  final IconData icon;
+  final Color color;
+  const _SocialButton({required this.icon, required this.color});
+
+  @override
+  State<_SocialButton> createState() => _SocialButtonState();
+}
+
+class _SocialButtonState extends State<_SocialButton> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: _isHovered ? widget.color : Colors.white.withOpacity(0.05),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Icon(
+          widget.icon,
+          color: Colors.white,
+          size: 20,
+        ),
+      ),
+    );
+  }
+}
+
+class _MinimalLink extends StatelessWidget {
+  final String label;
+  const _MinimalLink(this.label);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      label,
+      style: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 13),
     );
   }
 }

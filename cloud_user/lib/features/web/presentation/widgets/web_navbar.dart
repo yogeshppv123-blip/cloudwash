@@ -1,82 +1,208 @@
+import 'dart:ui';
+import 'package:cloud_user/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class WebNavBar extends ConsumerWidget {
   const WebNavBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    return ClipRRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          height: 100, // Slightly taller for more breathing room
+          padding: const EdgeInsets.symmetric(horizontal: 50),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.8),
+            border: Border(
+              bottom: BorderSide(
+                color: Colors.black.withOpacity(0.05),
+                width: 1,
+              ),
+            ),
+          ),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1400),
+              child: Row(
+                children: [
+                  // Logo Container (Left Aligned)
+                  Expanded(
+                    flex: 1,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: InkWell(
+                        onTap: () => context.go('/'),
+                        hoverColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        child: Image.asset(
+                          'assets/images/logo.png',
+                          height: 80, // Increased logo size significantly
+                          fit: BoxFit.contain,
+                          errorBuilder: (_, __, ___) => Text(
+                            'CLINOWASH',
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 26,
+                              color: AppTheme.primary,
+                              letterSpacing: 1.5,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  
+                  // Nav Links (Perfectly Centered)
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _NavLink(label: 'Home', onTap: () => context.go('/')),
+                      _NavLink(label: 'Services', onTap: () => context.go('/services')),
+                      _NavLink(label: 'How it Works', onTap: () => context.go('/how-it-works')),
+                      _NavLink(label: 'Pricing', onTap: () => context.go('/pricing')),
+                      _NavLink(label: 'Contact', onTap: () => context.go('/contact')),
+                    ],
+                  ),
+                  
+                  // Action Group (Right Aligned)
+                  Expanded(
+                    flex: 1,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _NavActionButton(
+                            icon: Icons.search_rounded,
+                            onTap: () {},
+                          ),
+                          const SizedBox(width: 8),
+                          _NavActionButton(
+                            icon: Icons.account_circle_outlined,
+                            onTap: () => context.push('/profile'),
+                          ),
+                          const SizedBox(width: 24),
+
+                          // Schedule Button
+                          _ScheduleButton(
+                            onTap: () => context.go('/services'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ScheduleButton extends StatelessWidget {
+  final VoidCallback onTap;
+  const _ScheduleButton({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      height: 80,
-      padding: const EdgeInsets.symmetric(horizontal: 40),
       decoration: BoxDecoration(
-        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        gradient: const LinearGradient(
+          colors: [
+            AppTheme.primary,
+            Color(0xFF2B3A67), // Slightly lighter blue for gradient
+          ],
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
+            color: AppTheme.primary.withOpacity(0.3),
+            blurRadius: 15,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
-          child: Row(
-            children: [
-              // Logo
-              InkWell(
-                onTap: () => context.go('/'),
-                child: Row(
-                  children: [
-                    Icon(Icons.local_laundry_service, color: Theme.of(context).primaryColor, size: 32),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Cloud Wash',
-                      style: TextStyle(
-                        fontSize: 24, 
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                  ],
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(15),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Book Now',
+                  style: GoogleFonts.inter(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    color: Colors.white,
+                    letterSpacing: 0.5,
+                  ),
                 ),
-              ),
-              const Spacer(),
-              
-              // Nav Links (Restored Blog & Reviews)
-              _NavLink(label: 'Home', onTap: () => context.go('/')),
-              _NavLink(label: 'About', onTap: () => context.go('/about')),
-              _NavLink(label: 'Services', onTap: () => context.go('/services')),
-              _NavLink(label: 'Contact', onTap: () => context.go('/contact')),
-              
-              const Spacer(),
-              
-              // Search & Profile
-              IconButton(onPressed: () {}, icon: const Icon(Icons.search, color: Colors.grey)),
-              const SizedBox(width: 8),
-              InkWell(
-                onTap: () => context.push('/profile'),
-                child: CircleAvatar(
-                  radius: 18,
-                  backgroundColor: Colors.grey.shade100,
-                  child: const Icon(Icons.person, color: Colors.grey, size: 20),
-                ),
-              ),
-              const SizedBox(width: 24),
+                const SizedBox(width: 8),
+                const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 16),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
 
-              // Book Now Button (Restored CTA)
-              ElevatedButton(
-                onPressed: () => context.go('/services'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-                  elevation: 2,
+class _NavLink extends StatefulWidget {
+  final String label;
+  final VoidCallback onTap;
+  const _NavLink({required this.label, required this.onTap});
+
+  @override
+  State<_NavLink> createState() => _NavLinkState();
+}
+
+class _NavLinkState extends State<_NavLink> with SingleTickerProviderStateMixin {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AnimatedDefaultTextStyle(
+                duration: const Duration(milliseconds: 200),
+                style: GoogleFonts.inter(
+                  fontWeight: _isHovered ? FontWeight.w600 : FontWeight.w500,
+                  fontSize: 15,
+                  color: _isHovered ? AppTheme.primary : AppTheme.textPrimary.withOpacity(0.8),
                 ),
-                child: const Text('Book Now', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                child: Text(widget.label),
+              ),
+              const SizedBox(height: 4),
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                height: 2,
+                width: _isHovered ? 20 : 0,
+                decoration: BoxDecoration(
+                  color: AppTheme.primary,
+                  borderRadius: BorderRadius.circular(2),
+                ),
               ),
             ],
           ),
@@ -86,20 +212,39 @@ class WebNavBar extends ConsumerWidget {
   }
 }
 
-class _NavLink extends StatelessWidget {
-  final String label;
+class _NavActionButton extends StatefulWidget {
+  final IconData icon;
   final VoidCallback onTap;
-  const _NavLink({required this.label, required this.onTap});
+  const _NavActionButton({required this.icon, required this.onTap});
+
+  @override
+  State<_NavActionButton> createState() => _NavActionButtonState();
+}
+
+class _NavActionButtonState extends State<_NavActionButton> {
+  bool _isHovered = false;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
       child: InkWell(
-        onTap: onTap,
-        child: Text(
-          label,
-          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+        onTap: widget.onTap,
+        borderRadius: BorderRadius.circular(12),
+        hoverColor: AppTheme.primary.withOpacity(0.05),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: _isHovered ? AppTheme.primary.withOpacity(0.05) : Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(
+            widget.icon,
+            color: _isHovered ? AppTheme.primary : AppTheme.textSecondary,
+            size: 24,
+          ),
         ),
       ),
     );
