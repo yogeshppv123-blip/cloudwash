@@ -2,8 +2,10 @@ import 'package:cloud_user/core/router/app_router.dart';
 import 'package:cloud_user/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 
 void main() {
+  usePathUrlStrategy(); // Remove # from URLs
   runApp(const ProviderScope(child: CloudUserApp()));
 }
 

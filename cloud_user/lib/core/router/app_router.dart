@@ -42,12 +42,17 @@ GoRouter goRouter(GoRouterRef ref) {
 /// Web Router - No bottom tabs, uses WebLayout with navbar + footer
 GoRouter _buildWebRouter() {
   return GoRouter(
-    initialLocation: '/home',
+    initialLocation: '/',
     navigatorKey: _rootNavigatorKey,
     debugLogDiagnostics: true,
     routes: [
       GoRoute(
         path: '/',
+        name: 'home',
+        builder: (context, state) => const WebHomeScreen(),
+      ),
+      GoRoute(
+        path: '/login',
         name: 'login',
         builder: (context, state) => const LoginScreen(),
       ),
@@ -60,11 +65,6 @@ GoRouter _buildWebRouter() {
             generatedOtp: extra['otp'] as String,
           );
         },
-      ),
-      GoRoute(
-        path: '/home',
-        name: 'home',
-        builder: (context, state) => const WebHomeScreen(),
       ),
       GoRoute(
         path: '/category/:id',
