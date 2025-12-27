@@ -1,4 +1,5 @@
 import 'package:cloud_user/features/auth/data/auth_repository.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -40,7 +41,11 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
       );
       
       if (mounted) {
-        context.go('/home');
+        if (kIsWeb) {
+          context.go('/');
+        } else {
+          context.go('/home');
+        }
       }
     } catch (e) {
       if (mounted) {

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:cloud_user/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -72,7 +73,13 @@ class _LoginScreenState extends State<LoginScreen> {
               Align(
                 alignment: Alignment.topRight,
                 child: TextButton(
-                  onPressed: () => context.go('/home'),
+                  onPressed: () {
+                    if (kIsWeb) {
+                      context.go('/');
+                    } else {
+                      context.go('/home');
+                    }
+                  },
                   child: const Text('Skip'),
                 ),
               ),

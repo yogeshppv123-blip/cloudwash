@@ -1,5 +1,6 @@
 import 'package:cloud_user/features/cart/data/cart_provider.dart';
 import 'package:cloud_user/features/location/data/location_provider.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -53,7 +54,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
-                context.go('/home');
+                if (kIsWeb) {
+                  context.go('/');
+                } else {
+                  context.go('/home');
+                }
               },
               child: const Text('OK'),
             ),

@@ -49826,7 +49826,7 @@ s=A.V(["phone",this.b,"otp",this.c],s,s)
 A.cg(r).f7("/otp",s,t.X)},
 $S:0}
 A.aHR.prototype={
-$0(){return A.cg(this.a).ej(0,"/home",null)},
+$0(){A.cg(this.a).ej(0,"/",null)},
 $S:0}
 A.vf.prototype={
 ae(){return new A.Me(new A.mS(B.h_,$.aw()))}}
@@ -49841,7 +49841,7 @@ p=4
 s=7
 return A.D(m.grt().nD(0,$.b6X(),t.m0).Ab(m.a.d,i),$async$Dl)
 case 7:k=m.c
-if(k!=null)A.cg(k).ej(0,"/home",null)
+if(k!=null)A.cg(k).ej(0,"/",null)
 n.push(6)
 s=5
 break
@@ -50021,7 +50021,7 @@ $S:203}
 A.aDa.prototype={
 $0(){var s=this.a
 A.mt(s,!1).lp(null)
-A.cg(s).ej(0,"/home",null)},
+A.cg(s).ej(0,"/",null)},
 $S:0}
 A.aDg.prototype={
 $0(){return A.cg(this.a).f7("/map",null,t.X)},
@@ -50676,7 +50676,7 @@ A.aAY.prototype={
 $0(){return A.cg(this.a).f7("/profile",null,t.X)},
 $S:0}
 A.aAZ.prototype={
-$0(){return A.cg(this.a).ej(0,"/bookings",null)},
+$0(){return A.cg(this.a).ej(0,"/services",null)},
 $S:0}
 A.wM.prototype={
 G(a){var s=null

@@ -68,7 +68,7 @@ class WebNavBar extends ConsumerWidget {
 
               // Book Now Button (Restored CTA)
               ElevatedButton(
-                onPressed: () => context.go('/bookings'),
+                onPressed: () => context.go('/services'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).primaryColor,
                   foregroundColor: Colors.white,
