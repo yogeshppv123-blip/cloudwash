@@ -21,13 +21,19 @@ class WebStaticPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pageData = _getPageData(pageType);
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 1000;
+    
     // Use wider layout for blog page
     final isWideLayout = pageType == StaticPageType.blog || pageType == StaticPageType.reviews;
 
     return WebLayout(
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 40),
+        padding: EdgeInsets.symmetric(
+          vertical: isMobile ? 40 : 60, 
+          horizontal: isMobile ? 20 : 40
+        ),
         child: Center(
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: isWideLayout ? 1100 : 800),
@@ -36,8 +42,8 @@ class WebStaticPage extends StatelessWidget {
               children: [
                 Text(
                   pageData.title,
-                  style: const TextStyle(
-                    fontSize: 36,
+                  style: TextStyle(
+                    fontSize: isMobile ? 28 : 36,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -148,52 +154,63 @@ class WebStaticPage extends StatelessWidget {
       case StaticPageType.contactUs:
         return _PageData(
           title: 'Contact Us',
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _paragraph('We\'d love to hear from you. Reach out to us for any queries or feedback.'),
-              const SizedBox(height: 24),
-              _contactItem(Icons.email_outlined, 'Email', 'help@cloudwash.com'),
-              _contactItem(Icons.phone_outlined, 'Phone', '+91 1800-123-4567'),
-              _contactItem(Icons.location_on_outlined, 'Office', 'Cloud Wash HQ, Indiranagar, Bangalore, 560038'),
-              const SizedBox(height: 32),
-              _heading('Business Hours'),
-              _paragraph('Monday - Saturday: 8:00 AM - 9:00 PM\nSunday: 9:00 AM - 6:00 PM'),
-            ],
+          content: Builder(
+            builder: (context) {
+              final isMobile = MediaQuery.of(context).size.width < 1000;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _paragraph('We\'d love to hear from you. Reach out to us for any queries or feedback.'),
+                  const SizedBox(height: 24),
+                  _contactItem(Icons.email_outlined, 'Email', 'help@cloudwash.com', isMobile),
+                  _contactItem(Icons.phone_outlined, 'Phone', '+91 1800-123-4567', isMobile),
+                  _contactItem(Icons.location_on_outlined, 'Office', 'Cloud Wash HQ, Bangalore, 560038', isMobile),
+                  const SizedBox(height: 32),
+                  _heading('Business Hours'),
+                  _paragraph('Monday - Saturday: 8:00 AM - 9:00 PM\nSunday: 9:00 AM - 6:00 PM'),
+                ],
+              );
+            },
           ),
         );
 
       case StaticPageType.blog:
         return _PageData(
           title: 'Cloud Wash Blog',
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _paragraph('Tips, tricks, and insights for garment care and laundry.'),
-              const SizedBox(height: 32),
-              Wrap(
-                spacing: 24,
-                runSpacing: 24,
+          content: Builder(
+            builder: (context) {
+              final double screenWidth = MediaQuery.of(context).size.width;
+              final bool isMobile = screenWidth < 1000;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    width: 520,
-                    child: _blogCard('How to Keep Your White Clothes Bright', 'Expert tips on maintaining the brightness of your white garments and removing stubborn stains...', 'https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=600'),
-                  ),
-                  SizedBox(
-                    width: 520,
-                    child: _blogCard('The Ultimate Guide to Dry Cleaning', 'When should you dry clean vs wash? Learn what fabrics need professional care...', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600'),
-                  ),
-                  SizedBox(
-                    width: 520,
-                    child: _blogCard('5 Tips to Make Your Shoes Last Longer', 'Proper shoe care can extend the life of your favorite footwear. Here\'s how...', 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600'),
-                  ),
-                  SizedBox(
-                    width: 520,
-                    child: _blogCard('Caring for Leather: Bags, Jackets & More', 'Professional tips for maintaining your leather goods and keeping them looking new...', 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600'),
+                  _paragraph('Tips, tricks, and insights for garment care and laundry.'),
+                  const SizedBox(height: 32),
+                  Wrap(
+                    spacing: 24,
+                    runSpacing: 24,
+                    children: [
+                      SizedBox(
+                        width: isMobile ? screenWidth - 40 : 520,
+                        child: _blogCard('How to Keep Your White Clothes Bright', 'Expert tips on maintaining the brightness of your white garments...', 'https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=600'),
+                      ),
+                      SizedBox(
+                        width: isMobile ? screenWidth - 40 : 520,
+                        child: _blogCard('The Ultimate Guide to Dry Cleaning', 'When should you dry clean vs wash? Learn what fabrics need professional care...', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600'),
+                      ),
+                      SizedBox(
+                        width: isMobile ? screenWidth - 40 : 520,
+                        child: _blogCard('5 Tips to Make Your Shoes Last Longer', 'Proper shoe care can extend the life of your footwear...', 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600'),
+                      ),
+                      SizedBox(
+                        width: isMobile ? screenWidth - 40 : 520,
+                        child: _blogCard('Caring for Leather Goods', 'Professional tips for maintaining your leather bags and jackets...', 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600'),
+                      ),
+                    ],
                   ),
                 ],
-              ),
-            ],
+              );
+            },
           ),
         );
 
@@ -277,7 +294,7 @@ class WebStaticPage extends StatelessWidget {
     );
   }
 
-  Widget _contactItem(IconData icon, String label, String value) {
+  Widget _contactItem(IconData icon, String label, String value, bool isMobile) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(20),
@@ -286,20 +303,35 @@ class WebStaticPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey.shade200),
       ),
-      child: Row(
-        children: [
-          Icon(icon, size: 28, color: AppTheme.primary),
-          const SizedBox(width: 16),
-          Column(
+      child: isMobile 
+        ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label, style: TextStyle(color: Colors.grey.shade600, fontSize: 14)),
-              const SizedBox(height: 4),
+              Row(
+                children: [
+                  Icon(icon, size: 24, color: AppTheme.primary),
+                  const SizedBox(width: 12),
+                  Text(label, style: TextStyle(color: Colors.grey.shade600, fontSize: 14)),
+                ],
+              ),
+              const SizedBox(height: 8),
               Text(value, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
             ],
+          )
+        : Row(
+            children: [
+              Icon(icon, size: 28, color: AppTheme.primary),
+              const SizedBox(width: 16),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(label, style: TextStyle(color: Colors.grey.shade600, fontSize: 14)),
+                  const SizedBox(height: 4),
+                  Text(value, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                ],
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
 

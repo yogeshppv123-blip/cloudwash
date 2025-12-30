@@ -2,6 +2,7 @@ import 'package:cloud_user/core/theme/app_theme.dart';
 import 'package:cloud_user/features/web/presentation/widgets/web_footer.dart';
 import 'package:cloud_user/features/web/presentation/widgets/web_navbar.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 /// Web Layout wrapper - provides navbar + footer for all web pages
 class WebLayout extends StatelessWidget {
@@ -11,12 +12,16 @@ class WebLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = MediaQuery.of(context).size.width < 1000;
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F8FA), // Light gray background
+      key: scaffoldKey,
+      backgroundColor: const Color(0xFFF7F8FA),
+      drawer: isMobile ? _buildMobileDrawer(context) : null,
       body: Column(
         children: [
-          // Top Navigation Bar
-          const WebNavBar(),
+          WebNavBar(scaffoldKey: scaffoldKey),
           
           // Scrollable Content
           Expanded(
@@ -34,6 +39,47 @@ class WebLayout extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildMobileDrawer(BuildContext context) {
+    return Drawer(
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: AppTheme.primary.withOpacity(0.05),
+              ),
+              child: Center(
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  height: 60,
+                  errorBuilder: (_, __, ___) => const Text('CLINOWASH', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                ),
+              ),
+            ),
+            _drawerTile(context, 'Home', '/', Icons.home_outlined),
+            _drawerTile(context, 'Services', '/services', Icons.local_laundry_service_outlined),
+            _drawerTile(context, 'Blog', '/blog', Icons.article_outlined),
+            _drawerTile(context, 'Contact', '/contact', Icons.contact_support_outlined),
+            const Divider(),
+            _drawerTile(context, 'Profile', '/profile', Icons.person_outline),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _drawerTile(BuildContext context, String title, String route, IconData icon) {
+    return ListTile(
+      leading: Icon(icon, color: AppTheme.primary),
+      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
+      onTap: () {
+        Navigator.pop(context);
+        context.go(route);
+      },
     );
   }
 }

@@ -7,171 +7,190 @@ class WebFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 1000;
+
     return Container(
       color: const Color(0xFF0F172A), // Deep Slate
-      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 40),
+      padding: EdgeInsets.symmetric(
+        vertical: isMobile ? 60 : 80, 
+        horizontal: isMobile ? 20 : 40
+      ),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1300),
           child: Column(
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Brand Column
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF818CF8),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: const Icon(Icons.waves_rounded, color: Colors.white, size: 28),
-                            ),
-                            const SizedBox(width: 16),
-                            Text(
-                              'Cloud Wash',
-                              style: GoogleFonts.inter(
-                                color: Colors.white,
-                                fontSize: 28,
-                                fontWeight: FontWeight.w900,
-                                letterSpacing: -0.5,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 32),
-                        Text(
-                          'Redefining premium garment care with technology and craftsmanship. Your wardrobe deserves nothing but the best.',
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.5),
-                            fontSize: 16,
-                            height: 1.8,
-                          ),
-                        ),
-                        const SizedBox(height: 48),
-                        Row(
-                          children: [
-                            _SocialButton(icon: Icons.facebook_rounded, color: const Color(0xFF3B82F6)),
-                            const SizedBox(width: 12),
-                            _SocialButton(icon: Icons.camera_alt_rounded, color: const Color(0xFFEC4899)),
-                            const SizedBox(width: 12),
-                            _SocialButton(icon: Icons.alternate_email_rounded, color: const Color(0xFF10B981)),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 100),
-                  
-                  // Navigation Links
-                  Expanded(
-                    child: _FooterColumn(
-                      title: 'EXPLORE',
-                      links: [
-                        {'label': 'Home', 'route': '/'},
-                        {'label': 'About Us', 'route': '/about'},
-                        {'label': 'Services', 'route': '/services'},
-                        {'label': 'Membership', 'route': '/membership'},
-                        {'label': 'Blog', 'route': '/blog'},
-                      ],
-                    ),
-                  ),
-                  
-                  // Services Links
-                  Expanded(
-                    child: _FooterColumn(
-                      title: 'SERVICES',
-                      links: [
-                        {'label': 'Dry Cleaning', 'route': '/services'},
-                        {'label': 'Wash & Fold', 'route': '/services'},
-                        {'label': 'Shoe Restoration', 'route': '/services'},
-                        {'label': 'Leather Care', 'route': '/services'},
-                        {'label': 'Steam Ironing', 'route': '/services'},
-                      ],
-                    ),
-                  ),
-                  
-                  // Support Column
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'CONTACT',
-                          style: GoogleFonts.inter(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 2,
-                          ),
-                        ),
-                        const SizedBox(height: 32),
-                        _ContactItem(icon: Icons.phone_rounded, text: '+91 98765 43210'),
-                        const SizedBox(height: 20),
-                        _ContactItem(icon: Icons.email_rounded, text: 'hello@cloudwash.com'),
-                        const SizedBox(height: 20),
-                        _ContactItem(
-                          icon: Icons.location_on_rounded, 
-                          text: 'Suite 402, Laundry Lane,\nBangalore, KA 560001',
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
+              if (isMobile)
+                Column(
+                  children: [
+                    _buildBrandColumn(isMobile),
+                    const SizedBox(height: 60),
+                    _buildFooterGrid(isMobile),
+                    const SizedBox(height: 60),
+                    _buildContactColumn(isMobile),
+                  ],
+                )
+              else
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(flex: 2, child: _buildBrandColumn(isMobile)),
+                    const SizedBox(width: 100),
+                    Expanded(child: _buildFooterColumn('EXPLORE', [
+                      {'label': 'Home', 'route': '/'},
+                      {'label': 'About Us', 'route': '/about'},
+                      {'label': 'Services', 'route': '/services'},
+                      {'label': 'Membership', 'route': '/membership'},
+                      {'label': 'Blog', 'route': '/blog'},
+                    ])),
+                    Expanded(child: _buildFooterColumn('SERVICES', [
+                      {'label': 'Dry Cleaning', 'route': '/services'},
+                      {'label': 'Wash & Fold', 'route': '/services'},
+                      {'label': 'Shoe Restoration', 'route': '/services'},
+                      {'label': 'Leather Care', 'route': '/services'},
+                      {'label': 'Steam Ironing', 'route': '/services'},
+                    ])),
+                    Expanded(flex: 1, child: _buildContactColumn(isMobile)),
+                  ],
+                ),
+              const SizedBox(height: 60),
               Container(
                 height: 1,
                 width: double.infinity,
                 color: Colors.white.withOpacity(0.05),
               ),
               const SizedBox(height: 48),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '© 2025 Cloud Wash. Crafted with precision.',
-                    style: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 14),
-                  ),
-                  Row(
-                    children: [
-                      _MinimalLink('Privacy Policy', route: '/privacy'),
-                      const SizedBox(width: 32),
-                      _MinimalLink('Terms of Service', route: '/terms'),
-                      const SizedBox(width: 32),
-                      _MinimalLink('Child Protection', route: '/child-protection'),
-                      const SizedBox(width: 32),
-                      _MinimalLink('Sitemap', route: '/'),
-                    ],
-                  ),
-                ],
-              ),
+              if (isMobile)
+                Column(
+                  children: [
+                    Text(
+                      '© 2025 Cloud Wash. Crafted with precision.',
+                      style: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 14),
+                    ),
+                    const SizedBox(height: 24),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 20,
+                      runSpacing: 10,
+                      children: [
+                        _MinimalLink('Privacy Policy', route: '/privacy'),
+                        _MinimalLink('Terms of Service', route: '/terms'),
+                        _MinimalLink('Child Protection', route: '/child-protection'),
+                        _MinimalLink('Sitemap', route: '/'),
+                      ],
+                    ),
+                  ],
+                )
+              else
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '© 2025 Cloud Wash. Crafted with precision.',
+                      style: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 14),
+                    ),
+                    Row(
+                      children: [
+                        _MinimalLink('Privacy Policy', route: '/privacy'),
+                        const SizedBox(width: 32),
+                        _MinimalLink('Terms of Service', route: '/terms'),
+                        const SizedBox(width: 32),
+                        _MinimalLink('Child Protection', route: '/child-protection'),
+                        const SizedBox(width: 32),
+                        _MinimalLink('Sitemap', route: '/'),
+                      ],
+                    ),
+                  ],
+                ),
             ],
           ),
         ),
       ),
     );
   }
-}
 
-
-class _FooterColumn extends StatelessWidget {
-  final String title;
-  final List<Map<String, String>> links;
-  const _FooterColumn({required this.title, required this.links});
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildBrandColumn(bool isMobile) {
     return Column(
+      crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: const Color(0xFF818CF8),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Icon(Icons.waves_rounded, color: Colors.white, size: 28),
+            ),
+            const SizedBox(width: 16),
+            Text(
+              'Cloud Wash',
+              style: GoogleFonts.inter(
+                color: Colors.white,
+                fontSize: 28,
+                fontWeight: FontWeight.w900,
+                letterSpacing: -0.5,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 32),
+        Text(
+          'Redefining premium garment care with technology and craftsmanship. Your wardrobe deserves nothing but the best.',
+          textAlign: isMobile ? TextAlign.center : TextAlign.start,
+          style: TextStyle(
+            color: Colors.white.withOpacity(0.5),
+            fontSize: 16,
+            height: 1.8,
+          ),
+        ),
+        const SizedBox(height: 48),
+        Row(
+          mainAxisAlignment: isMobile ? MainAxisAlignment.center : MainAxisAlignment.start,
+          children: [
+            _SocialButton(icon: Icons.facebook_rounded, color: const Color(0xFF3B82F6)),
+            const SizedBox(width: 12),
+            _SocialButton(icon: Icons.camera_alt_rounded, color: const Color(0xFFEC4899)),
+            const SizedBox(width: 12),
+            _SocialButton(icon: Icons.alternate_email_rounded, color: const Color(0xFF10B981)),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFooterGrid(bool isMobile) {
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: _buildFooterColumn('EXPLORE', [
+            {'label': 'Home', 'route': '/'},
+            {'label': 'About Us', 'route': '/about'},
+            {'label': 'Services', 'route': '/services'},
+            {'label': 'Membership', 'route': '/membership'},
+            {'label': 'Blog', 'route': '/blog'},
+          ], isCenter: isMobile),
+        ),
+        Expanded(
+          child: _buildFooterColumn('SERVICES', [
+            {'label': 'Dry Cleaning', 'route': '/services'},
+            {'label': 'Wash & Fold', 'route': '/services'},
+            {'label': 'Shoe Restoration', 'route': '/services'},
+            {'label': 'Leather Care', 'route': '/services'},
+            {'label': 'Steam Ironing', 'route': '/services'},
+          ], isCenter: isMobile),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFooterColumn(String title, List<Map<String, String>> links, {bool isCenter = false}) {
+    return Column(
+      crossAxisAlignment: isCenter ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
         Text(
           title,
@@ -182,11 +201,56 @@ class _FooterColumn extends StatelessWidget {
             letterSpacing: 2,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 24),
         ...links.map((link) => Padding(
           padding: const EdgeInsets.only(bottom: 16),
           child: _FooterLink(link['label']!),
         )).toList(),
+      ],
+    );
+  }
+
+  Widget _buildContactColumn(bool isMobile) {
+    return Column(
+      crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      children: [
+        Text(
+          'CONTACT',
+          style: GoogleFonts.inter(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 2,
+          ),
+        ),
+        const SizedBox(height: 32),
+        _buildContactItem(Icons.phone_rounded, '+91 98765 43210', isMobile),
+        const SizedBox(height: 20),
+        _buildContactItem(Icons.email_rounded, 'hello@cloudwash.com', isMobile),
+        const SizedBox(height: 20),
+        _buildContactItem(
+          Icons.location_on_rounded, 
+          'Suite 402, Laundry Lane,\nBangalore, KA 560001',
+          isMobile,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildContactItem(IconData icon, String text, bool isMobile) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, color: const Color(0xFF818CF8), size: 20),
+        const SizedBox(width: 16),
+        Flexible(
+          child: Text(
+            text,
+            textAlign: isMobile ? TextAlign.center : TextAlign.start,
+            style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 15, height: 1.5),
+          ),
+        ),
       ],
     );
   }
@@ -217,29 +281,6 @@ class _FooterLinkState extends State<_FooterLink> {
         ),
         child: Text(widget.label),
       ),
-    );
-  }
-}
-
-class _ContactItem extends StatelessWidget {
-  final IconData icon;
-  final String text;
-  const _ContactItem({required this.icon, required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, color: const Color(0xFF818CF8), size: 20),
-        const SizedBox(width: 16),
-        Expanded(
-          child: Text(
-            text,
-            style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 15, height: 1.5),
-          ),
-        ),
-      ],
     );
   }
 }

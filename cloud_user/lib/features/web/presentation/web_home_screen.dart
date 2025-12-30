@@ -63,8 +63,8 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
               _buildSpotlightSection(context),
               _buildOffersSection(context),
               _buildMostBookedSection(context),
-              _buildHowItWorksSection(context), // 6-stage process (Pink BG)
-              _buildMoreReasonsSection(context), // More reasons (Yellow BG)
+              _buildBlogPreviewSection(context),
+              _buildContactSection(context),
               _buildWhyChooseUsSection(context),
               _buildTestimonialsSection(context),
               _buildStatsAndDownloadSection(context),
@@ -83,9 +83,17 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
   // --- Sections ---
 
   Widget _buildHeroSection(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 1000;
+
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.only(top: 0, bottom: 0, left: 40, right: 40),
+      padding: EdgeInsets.only(
+        top: isMobile ? 40 : 0, 
+        bottom: isMobile ? 60 : 0, 
+        left: isMobile ? 20 : 40, 
+        right: isMobile ? 20 : 40
+      ),
       decoration: const BoxDecoration(
         color: Colors.white,
       ),
@@ -95,168 +103,40 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
           Positioned(
             top: -50,
             left: -50,
-            child: _AnimatedBubble(size: 200, color: const Color(0xFF89CFF0).withOpacity(0.3), delay: 0),
+            child: _AnimatedBubble(size: isMobile ? 120 : 200, color: const Color(0xFF89CFF0).withOpacity(0.3), delay: 0),
           ),
           Positioned(
             top: 100,
             right: 100,
-            child: _AnimatedBubble(size: 120, color: const Color(0xFFB5EAD7).withOpacity(0.4), delay: 1),
+            child: _AnimatedBubble(size: isMobile ? 80 : 120, color: const Color(0xFFB5EAD7).withOpacity(0.4), delay: 1),
           ),
-          Positioned(
-            bottom: -30,
-            left: 200,
-            child: _AnimatedBubble(size: 150, color: const Color(0xFFC9B1FF).withOpacity(0.3), delay: 2),
-          ),
-          Positioned(
-            bottom: 50,
-            right: -30,
-            child: _AnimatedBubble(size: 180, color: const Color(0xFF89CFF0).withOpacity(0.25), delay: 0.5),
-          ),
-          Positioned(
-            top: 200,
-            left: 400,
-            child: _AnimatedBubble(size: 80, color: const Color(0xFFFFD1DC).withOpacity(0.4), delay: 1.5),
-          ),
+          
           // Main Content
           Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 1200),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Left Side Content
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Tagline
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.8),
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: Colors.blue.shade100),
-                          ),
-                          child: Text(
-                            '✨ We Are Clino',
-                            style: TextStyle(color: Colors.blue.shade700, fontSize: 14, fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        // Main Title
-                        Text(
-                          'Feel Your Way For\nFreshness',
-                          style: GoogleFonts.playfairDisplay(
-                            fontSize: 52,
-                            fontWeight: FontWeight.bold,
-                            height: 1.15,
-                            color: const Color(0xFF1E293B),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        // Description
-                        Text(
-                          'Experience the epitome of cleanliness with Clino. We provide top-notch cleaning services tailored to your needs, ensuring your spaces shine with perfection.',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey.shade600,
-                            height: 1.6,
-                          ),
-                        ),
-                        const SizedBox(height: 32),
-                        // Action Buttons
-                        Row(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () => context.push('/services'),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF1E3A5F),
-                                foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                                elevation: 0,
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: const [
-                                  Text('Our Services', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
-                                  SizedBox(width: 8),
-                                  Icon(Icons.arrow_forward, size: 18),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 15)],
-                              ),
-                              child: IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.play_arrow, color: Colors.blue.shade700),
-                                iconSize: 28,
-                                padding: const EdgeInsets.all(14),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 40),
-                        // VIP Clients & Stats
-                        Row(
-                          children: [
-                            // Avatar Stack
-                            SizedBox(
-                              width: 100,
-                              height: 40,
-                              child: Stack(
-                                children: List.generate(4, (i) => Positioned(
-                                  left: i * 22.0,
-                                  child: CircleAvatar(
-                                    radius: 20,
-                                    backgroundColor: Colors.white,
-                                    child: CircleAvatar(
-                                      radius: 18,
-                                      backgroundColor: [Colors.blue, Colors.purple, Colors.teal, Colors.orange][i],
-                                      child: Text(['👤', '👨', '👩', '🧑'][i], style: const TextStyle(fontSize: 14)),
-                                    ),
-                                  ),
-                                )),
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Text('Our VIP Clients', style: TextStyle(color: Colors.grey.shade700, fontSize: 14)),
-                          ],
-                        ),
-                        const SizedBox(height: 24),
-                        // Stats Cards
-                   
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 100), // Increased gap for better breathing room
-                  // Right Side Image
-                  Expanded(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.network(
-                        'https://res.cloudinary.com/dssmutzly/image/upload/v1766830730/4d01db37af62132b8e554cfabce7767a_z7ioie.png',
-                        height: 500,
-                        fit: BoxFit.contain,
-                        errorBuilder: (_, __, ___) => Container(
-                          height: 500,
-                          decoration: BoxDecoration(
-                            color: Colors.blue.shade50,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: const Center(child: Icon(Icons.cleaning_services, size: 100, color: Colors.blue)),
-                        ),
+              child: isMobile 
+                ? Column(
+                    children: [
+                      _buildHeroContent(context, isMobile),
+                      const SizedBox(height: 60),
+                      _buildHeroImage(context, isMobile),
+                    ],
+                  )
+                : Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Left Side Content
+                      Expanded(
+                        child: _buildHeroContent(context, isMobile),
                       ),
-                    ),
+                      const SizedBox(width: 80),
+                      // Right Side Image
+                      Expanded(
+                        child: _buildHeroImage(context, isMobile),
+                      ),
+                    ],
                   ),
-                ],
-              ),
             ),
           ),
         ],
@@ -264,7 +144,143 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
     );
   }
 
+  Widget _buildHeroContent(BuildContext context, bool isMobile) {
+    return Column(
+      crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        // Tagline
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.8),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.blue.shade100),
+          ),
+          child: Text(
+            '✨ We Are Clino',
+            style: TextStyle(color: Colors.blue.shade700, fontSize: 14, fontWeight: FontWeight.w600),
+          ),
+        ),
+        const SizedBox(height: 24),
+        // Main Title
+        Text(
+          isMobile ? 'Feel Your Way\nFor Freshness' : 'Feel Your Way For\nFreshness',
+          textAlign: isMobile ? TextAlign.center : TextAlign.start,
+          style: GoogleFonts.playfairDisplay(
+            fontSize: isMobile ? 38 : 52,
+            fontWeight: FontWeight.bold,
+            height: 1.15,
+            color: const Color(0xFF1E293B),
+          ),
+        ),
+        const SizedBox(height: 20),
+        // Description
+        Text(
+          'Experience the epitome of cleanliness with Clino. We provide top-notch cleaning services tailored to your needs, ensuring your spaces shine with perfection.',
+          textAlign: isMobile ? TextAlign.center : TextAlign.start,
+          style: TextStyle(
+            fontSize: isMobile ? 15 : 16,
+            color: Colors.grey.shade600,
+            height: 1.6,
+          ),
+        ),
+        const SizedBox(height: 32),
+        // Action Buttons
+        Row(
+          mainAxisAlignment: isMobile ? MainAxisAlignment.center : MainAxisAlignment.start,
+          children: [
+            ElevatedButton(
+              onPressed: () => context.push('/services'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF1E3A5F),
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(
+                  horizontal: isMobile ? 20 : 28, 
+                  vertical: isMobile ? 14 : 18
+                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                elevation: 0,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('Our Services', style: TextStyle(fontWeight: FontWeight.w600, fontSize: isMobile ? 14 : 15)),
+                  const SizedBox(width: 8),
+                  const Icon(Icons.arrow_forward, size: 18),
+                ],
+              ),
+            ),
+            const SizedBox(width: 16),
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 15)],
+              ),
+              child: IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.play_arrow, color: Colors.blue.shade700),
+                iconSize: 28,
+                padding: const EdgeInsets.all(14),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 40),
+        // VIP Clients
+        Row(
+          mainAxisAlignment: isMobile ? MainAxisAlignment.center : MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 100,
+              height: 40,
+              child: Stack(
+                children: List.generate(4, (i) => Positioned(
+                  left: i * 22.0,
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.white,
+                    child: CircleAvatar(
+                      radius: 18,
+                      backgroundColor: [Colors.blue, Colors.purple, Colors.teal, Colors.orange][i],
+                      child: Text(['👤', '👨', '👩', '🧑'][i], style: const TextStyle(fontSize: 14)),
+                    ),
+                  ),
+                )),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Text('Our VIP Clients', style: TextStyle(color: Colors.grey.shade700, fontSize: 14)),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHeroImage(BuildContext context, bool isMobile) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: Image.network(
+        'https://res.cloudinary.com/dssmutzly/image/upload/v1766830730/4d01db37af62132b8e554cfabce7767a_z7ioie.png',
+        height: isMobile ? 350 : 500,
+        fit: BoxFit.contain,
+        errorBuilder: (_, __, ___) => Container(
+          height: isMobile ? 350 : 500,
+          decoration: BoxDecoration(
+            color: Colors.blue.shade50,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: const Center(child: Icon(Icons.cleaning_services, size: 100, color: Colors.blue)),
+        ),
+      ),
+    );
+  }
+
   Widget _buildCategoriesSection(BuildContext context, AsyncValue<List<dynamic>> categoriesAsync) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 1000;
+    
     final mockCategories = [
       {'name': 'Laundry', 'id': '1', 'count': '250+ Items'},
       {'name': 'Dry Cleaning', 'id': '2', 'count': '500+ Items'},
@@ -275,37 +291,72 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
     ];
 
     return Container(
-      padding: const EdgeInsets.only(top: 20, bottom: 60, left: 40, right: 40),
+      padding: EdgeInsets.only(
+        top: 20, 
+        bottom: isMobile ? 40 : 60, 
+        left: isMobile ? 20 : 40, 
+        right: isMobile ? 20 : 40
+      ),
       color: Colors.white,
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1200),
           child: Column(
             children: [
-              // Centered Title
-              const Text('Shop By Category', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Color(0xFF1E293B))),
-              const SizedBox(height: 50),
-              // 6 Categories in 1 Row as Cards
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: mockCategories.asMap().entries.map((entry) {
-                  final index = entry.key;
-                  final item = entry.value;
-                  return Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: _CategoryItem(
-                        name: item['name']!,
-                        count: item['count']!,
-                        icon: _getCategoryIcon(item['name']!),
-                        iconColor: _getCardColor(index),
-                        imagePath: _getCategoryImagePath(item['name']!),
-                        onTap: () => context.push('/category/${item['id']}', extra: item['name']),
-                      ),
-                    ),
-                  );
-                }).toList(),
+              Text(
+                'Shop By Category', 
+                style: TextStyle(
+                  fontSize: isMobile ? 26 : 32, 
+                  fontWeight: FontWeight.bold, 
+                  color: const Color(0xFF1E293B)
+                )
               ),
+              SizedBox(height: isMobile ? 30 : 50),
+              
+              if (isMobile)
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 15,
+                    mainAxisSpacing: 15,
+                    childAspectRatio: 0.75,
+                  ),
+                  itemCount: mockCategories.length,
+                  itemBuilder: (context, index) {
+                    final item = mockCategories[index];
+                    return _CategoryItem(
+                      name: item['name']!,
+                      count: item['count']!,
+                      icon: _getCategoryIcon(item['name']!),
+                      iconColor: _getCardColor(index),
+                      imagePath: _getCategoryImagePath(item['name']!),
+                      onTap: () => context.push('/category/${item['id']}', extra: item['name']),
+                    );
+                  },
+                )
+              else
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: mockCategories.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final item = entry.value;
+                    return Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: _CategoryItem(
+                          name: item['name']!,
+                          count: item['count']!,
+                          icon: _getCategoryIcon(item['name']!),
+                          iconColor: _getCardColor(index),
+                          imagePath: _getCategoryImagePath(item['name']!),
+                          onTap: () => context.push('/category/${item['id']}', extra: item['name']),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
             ],
           ),
         ),
@@ -316,260 +367,263 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
 
 
   Widget _buildAboutUsSection(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 1000;
+
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 40),
+      padding: EdgeInsets.symmetric(
+        vertical: isMobile ? 40 : 80, 
+        horizontal: isMobile ? 20 : 40
+      ),
       color: Colors.white,
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1200),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Left Side: Image Collage
-              Expanded(
-                flex: 6,
-                child: SizedBox(
-                  height: 550,
-                  child: Stack(
-                    children: [
-                      // Star Icons
-                      Positioned(
-                        top: 40,
-                        left: 20,
-                        child: _ShiningStars(),
-                      ),
-                      // Top Right Image
-                      Positioned(
-                        top: 0,
-                        right: 40,
-                        child: _RoundedImage(
-                          imageUrl: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?q=80&w=500&auto=format&fit=crop',
-                          width: 320,
-                          height: 380,
-                        ),
-                      ),
-                      // Bottom Left Image
-                      Positioned(
-                        bottom: 20,
-                        left: 40,
-                        child: _RoundedImage(
-                          imageUrl: 'https://images.unsplash.com/photo-1582735689369-4fe89db7114c?q=80&w=500&auto=format&fit=crop',
-                          width: 300,
-                          height: 350,
-                        ),
-                      ),
-                      // Play Video Card
-                      Positioned(
-                        bottom: 0,
-                        left: 280,
-                        child: Container(
-                          padding: const EdgeInsets.all(24),
-                          width: 180,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF4AC3F5),
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xFF4AC3F5).withOpacity(0.3),
-                                blurRadius: 20,
-                                offset: const Offset(0, 10),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                width: 44,
-                                height: 44,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Color(0xFFFFB100),
-                                ),
-                                child: const Center(
-                                  child: Icon(Icons.play_arrow, color: Colors.white, size: 24),
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              const Text(
-                                'Play Video',
-                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                'How we care for your clothes',
-                                style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 12),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+          child: isMobile 
+            ? Column(
+                children: [
+                  _buildAboutUsContent(context, isMobile),
+                  const SizedBox(height: 60),
+                  _buildAboutUsImages(isMobile),
+                ],
+              )
+            : Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Left Side: Image Collage
+                  Expanded(
+                    flex: 6,
+                    child: _buildAboutUsImages(isMobile),
                   ),
-                ),
+                  const SizedBox(width: 80),
+                  // Right Side: Content
+                  Expanded(
+                    flex: 5,
+                    child: _buildAboutUsContent(context, isMobile),
+                  ),
+                ],
               ),
-              const SizedBox(width: 80),
-              // Right Side: Content
-              Expanded(
-                flex: 5,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFB100),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Text(
-                        'ABOUT US',
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 1),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    Text(
-                      'Your Trusted Partner in\nLaundry Care.',
-                      style: GoogleFonts.playfairDisplay(
-                        fontSize: 48,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF1E293B),
-                        height: 1.1,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      'We provide professional laundry and dry cleaning services with a focus on quality, convenience, and care. Our mission is to make your life easier by taking the burden of laundry off your shoulders.',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey.shade600,
-                        height: 1.6,
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    const _AboutFeatureItem(
-                      title: 'Passionate Expertise',
-                      desc: 'Our team consists of fabric care experts who treat every garment with the respect it deserves.',
-                    ),
-                    const SizedBox(height: 24),
-                    const _AboutFeatureItem(
-                      title: 'Cutting-Edge Technology',
-                      desc: 'We use the latest eco-friendly cleaning technology to ensure the best results for your clothes and the environment.',
-                    ),
-                    const SizedBox(height: 24),
-                    const _AboutFeatureItem(
-                      title: 'Customer-Centric Approach',
-                      desc: 'Everything we do is designed around your convenience, from easy scheduling to friendly service.',
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );
   }
 
-  Widget _buildHowItWorksSection(BuildContext context) {
-    final stages = [
-      {'title': 'Sorting & Inspection', 'desc': 'Segregation based on category and fabric carefully.', 'icon': Icons.shutter_speed, 'color': const Color(0xFF6366F1)},
-      {'title': 'Stain Treatment', 'desc': 'Italian spotting machines for expert removal.', 'icon': Icons.waves, 'color': const Color(0xFFEC4899)},
-      {'title': 'Processing', 'desc': 'German Eco-friendly cleaning solutions used.', 'icon': Icons.opacity, 'color': const Color(0xFF14B8A6)},
-      {'title': 'Finishing', 'desc': 'Unique Steam Ironing for each garment type.', 'icon': Icons.iron, 'color': const Color(0xFFF59E0B)},
-      {'title': 'Quality Check', 'desc': 'Meticulous inspection of item by expert team.', 'icon': Icons.fact_check, 'color': const Color(0xFF8B5CF6)},
-      {'title': 'Packing', 'desc': 'Vacuum packing for best protection of laundry.', 'icon': Icons.inventory_2, 'color': const Color(0xFF10B981)},
-    ];
+  Widget _buildAboutUsImages(bool isMobile) {
+    return SizedBox(
+      height: isMobile ? 400 : 550,
+      child: Stack(
+        children: [
+          // Background Circle Decoration
+          Positioned(
+            left: 20,
+            top: 20,
+            child: Container(
+              width: isMobile ? 300 : 450,
+              height: isMobile ? 300 : 450,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color(0xFFF1F5F9).withOpacity(0.8),
+              ),
+            ),
+          ),
+          // Top Right Image
+          Positioned(
+            top: 0,
+            right: isMobile ? 0 : 40,
+            child: _RoundedImage(
+              imageUrl: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?q=80&w=500&auto=format&fit=crop',
+              width: isMobile ? 180 : 320,
+              height: isMobile ? 200 : 380,
+            ),
+          ),
+          // Bottom Left Image
+          Positioned(
+            bottom: isMobile ? 20 : 20,
+            left: isMobile ? 0 : 40,
+            child: _RoundedImage(
+              imageUrl: 'https://images.unsplash.com/photo-1582735689369-4fe89db7114c?q=80&w=500&auto=format&fit=crop',
+              width: isMobile ? 180 : 300,
+              height: isMobile ? 200 : 350,
+            ),
+          ),
+          // Play Video Card
+          if (!isMobile)
+            Positioned(
+              bottom: 0,
+              left: 280,
+              child: Container(
+                padding: const EdgeInsets.all(24),
+                width: 180,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF4AC3F5),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF4AC3F5).withOpacity(0.3),
+                      blurRadius: 20,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 44,
+                      height: 44,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xFFFFB100),
+                      ),
+                      child: const Center(
+                        child: Icon(Icons.play_arrow, color: Colors.white, size: 24),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Play Video',
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'How we care for your clothes',
+                      style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 12),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAboutUsContent(BuildContext context, bool isMobile) {
+    return Column(
+      crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: const Color(0xFFFFB100),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: const Text(
+            'ABOUT US',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12, letterSpacing: 1),
+          ),
+        ),
+        const SizedBox(height: 24),
+        Text(
+          'Your Trusted Partner in\nLaundry Care.',
+          textAlign: isMobile ? TextAlign.center : TextAlign.start,
+          style: GoogleFonts.playfairDisplay(
+            fontSize: isMobile ? 32 : 48,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF1E293B),
+            height: 1.1,
+          ),
+        ),
+        const SizedBox(height: 20),
+        Text(
+          'We provide professional laundry and dry cleaning services with a focus on quality, convenience, and care. Our mission is to make your life easier by taking the burden of laundry off your shoulders.',
+          textAlign: isMobile ? TextAlign.center : TextAlign.start,
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.grey.shade600,
+            height: 1.6,
+          ),
+        ),
+        const SizedBox(height: 40),
+        const _AboutFeatureItem(
+          title: 'Passionate Expertise',
+          desc: 'Our team consists of fabric care experts who treat every garment with the respect it deserves.',
+        ),
+        const SizedBox(height: 24),
+        const _AboutFeatureItem(
+          title: 'Cutting-Edge Technology',
+          desc: 'We use the latest eco-friendly cleaning technology to ensure the best results for your clothes and the environment.',
+        ),
+        const SizedBox(height: 24),
+        const _AboutFeatureItem(
+          title: 'Customer-Centric Approach',
+          desc: 'Everything we do is designed around your convenience, from easy scheduling to friendly service.',
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBlogPreviewSection(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 1000;
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
-      color: const Color(0xFFF1F5F9), // Very light slate
+      padding: EdgeInsets.symmetric(
+        vertical: isMobile ? 60 : 100, 
+        horizontal: isMobile ? 20 : 40
+      ),
+      color: Colors.white,
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1300),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
-              Column(
+              Text(
+                'OUR BLOG',
+                style: GoogleFonts.inter(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF6366F1),
+                  letterSpacing: 2,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'OUR EXPERT PROCESS',
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF6366F1),
-                      letterSpacing: 2,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    '6 Stages of Perfection',
+                   Text(
+                    'Latest from Cloud Wash',
                     style: GoogleFonts.playfairDisplay(
-                      fontSize: 48,
+                      fontSize: isMobile ? 32 : 48,
                       fontWeight: FontWeight.bold,
                       color: const Color(0xFF1E293B),
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Specialized Machinery & Skilled Experts for each stage makes us the best.',
-                    style: TextStyle(fontSize: 18, color: Colors.grey.shade600),
-                  ),
+                  if (!isMobile)
+                    TextButton.icon(
+                      onPressed: () => context.go('/blog'),
+                      icon: const Text('Visit Blog', style: TextStyle(fontWeight: FontWeight.bold)),
+                      label: const Icon(Icons.arrow_forward),
+                      style: TextButton.styleFrom(foregroundColor: AppTheme.primary),
+                    ),
                 ],
               ),
-              const SizedBox(height: 64),
-              // Stages Grid
-              Wrap(
-                spacing: 24,
-                runSpacing: 24,
-                alignment: WrapAlignment.center,
-                children: stages.asMap().entries.map((entry) {
-                  final index = entry.key;
-                  final stage = entry.value;
-                  return _ProcessStepCard(
-                    number: index + 1,
-                    title: stage['title'] as String,
-                    desc: stage['desc'] as String,
-                    icon: stage['icon'] as IconData,
-                    color: stage['color'] as Color,
-                  );
-                }).toList(),
-              ),
-              const SizedBox(height: 64),
-              // Action Row
-              Container(
-                padding: const EdgeInsets.all(32),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [const Color(0xFF1E293B), const Color(0xFF334155)],
-                  ),
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 20, offset: const Offset(0, 10)),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Ready to experience Clino?',
-                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(width: 32),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF6366F1),
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                        elevation: 0,
+              const SizedBox(height: 48),
+              isMobile 
+                ? Column(
+                    children: [
+                       _blogPreviewCard('How to Keep Your White Clothes Bright', 'Expert tips on maintaining the brightness of your white garments...', 'https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=600'),
+                       const SizedBox(height: 24),
+                       _blogPreviewCard('The Ultimate Guide to Dry Cleaning', 'When should you dry clean vs wash?', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600'),
+                    ],
+                  )
+                : Row(
+                    children: [
+                      Expanded(
+                        child: _blogPreviewCard('How to Keep Your White Clothes Bright', 'Expert tips on maintaining the brightness of your white garments...', 'https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=600'),
                       ),
-                      child: const Text('Schedule Free Pickup', style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                  ],
-                ),
-              ),
+                      const SizedBox(width: 24),
+                      Expanded(
+                        child: _blogPreviewCard('The Ultimate Guide to Dry Cleaning', 'When should you dry clean vs wash?', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600'),
+                      ),
+                      const SizedBox(width: 24),
+                      Expanded(
+                        child: _blogPreviewCard('Caring for Leather Goods', 'Professional tips for maintaining leather...', 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600'),
+                      ),
+                    ],
+                  ),
             ],
           ),
         ),
@@ -577,111 +631,171 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
     );
   }
 
-  Widget _buildMoreReasonsSection(BuildContext context) {
+  Widget _blogPreviewCard(String title, String snippet, String imageUrl) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
-      decoration: const BoxDecoration(
-        color: Color(0xFFFDFCFB), // Very soft warm white
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Color(0xFFFDFCFB), Color(0xFFF5F7FA)],
-        ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.black.withOpacity(0.05)),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 20, offset: const Offset(0, 10)),
+        ],
       ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+            child: Image.network(imageUrl, height: 200, width: double.infinity, fit: BoxFit.cover),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1E293B)), maxLines: 2, overflow: TextOverflow.ellipsis),
+                const SizedBox(height: 12),
+                Text(snippet, style: TextStyle(color: Colors.grey.shade600, height: 1.5), maxLines: 2, overflow: TextOverflow.ellipsis),
+                const SizedBox(height: 20),
+                Text('Read More →', style: TextStyle(color: AppTheme.primary, fontWeight: FontWeight.bold)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContactSection(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 1000;
+
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: isMobile ? 60 : 100, 
+        horizontal: isMobile ? 20 : 40
+      ),
+      color: const Color(0xFFF8FAFC),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1300),
-          child: Row(
-            children: [
-              // Left: High-end lifestyle image
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(40),
-                  child: Image.asset(
-                    'assets/images/c8736117bc600770c09c5d070437eb14 (1).jpg',
-                    height: 550,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+          constraints: const BoxConstraints(maxWidth: 1100),
+          child: isMobile 
+            ? Column(
+                children: [
+                  _contactInfoCard(isMobile),
+                  const SizedBox(height: 48),
+                  _contactFormPreview(isMobile),
+                ],
+              )
+            : Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(flex: 2, child: _contactInfoCard(isMobile)),
+                  const SizedBox(width: 64),
+                  Expanded(flex: 3, child: _contactFormPreview(isMobile)),
+                ],
               ),
-              const SizedBox(width: 80),
-              // Right: Value Propositions
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'THE CLINO EXPERIENCE',
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF6366F1),
-                        letterSpacing: 3,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'More Reasons to\nExperience Us',
-                      style: GoogleFonts.playfairDisplay(
-                        fontSize: 52,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF1E293B),
-                        height: 1.1,
-                      ),
-                    ),
-                    const SizedBox(height: 48),
-                    // Value Cards
-                    _ValueReasonCard(
-                      icon: Icons.local_offer,
-                      title: 'Flat 20% Off On 1st Order',
-                      subtitle: 'Exclusively for our first-time users',
-                      badge: 'NEW USER',
-                      color: const Color(0xFF6366F1),
-                    ),
-                    const SizedBox(height: 20),
-                    _ValueReasonCard(
-                      icon: Icons.card_membership,
-                      title: 'Attractive Membership Plans',
-                      subtitle: 'Save more with our monthly packages',
-                      badge: 'BEST VALUE',
-                      color: const Color(0xFFEC4899),
-                    ),
-                    const SizedBox(height: 20),
-                    _ValueReasonCard(
-                      icon: Icons.delivery_dining,
-                      title: 'Free Pick up & Drop',
-                      subtitle: 'Doorstep service at your convenience',
-                      badge: 'FREE',
-                      color: const Color(0xFF14B8A6),
-                    ),
-                    const SizedBox(height: 48),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF1E293B),
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 22),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                        elevation: 0,
-                      ),
-                      child: const Text(
-                        'Explore Our Pricing',
-                        style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
         ),
+      ),
+    );
+  }
+
+  Widget _contactInfoCard(bool isMobile) {
+    return Column(
+      crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      children: [
+        Text(
+          'GET IN TOUCH',
+          style: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.bold, color: const Color(0xFF6366F1), letterSpacing: 2),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          'We\'re Here to Help',
+          style: GoogleFonts.playfairDisplay(fontSize: 36, fontWeight: FontWeight.bold, color: const Color(0xFF1E293B)),
+        ),
+        const SizedBox(height: 32),
+        _contactDetailItem(Icons.phone_rounded, 'Call Us', '+91 1800-123-4567'),
+        const SizedBox(height: 24),
+        _contactDetailItem(Icons.email_rounded, 'Email Us', 'help@cloudwash.com'),
+        const SizedBox(height: 24),
+        _contactDetailItem(Icons.location_on_rounded, 'Visit Us', 'Cloud Wash HQ, Bangalore, 560038'),
+      ],
+    );
+  }
+
+  Widget _contactDetailItem(IconData icon, String title, String value) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(color: const Color(0xFF6366F1).withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
+          child: Icon(icon, color: const Color(0xFF6366F1), size: 24),
+        ),
+        const SizedBox(width: 16),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: TextStyle(color: Colors.grey.shade500, fontSize: 13)),
+            Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFF1E293B))),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _contactFormPreview(bool isMobile) {
+    return Container(
+      padding: const EdgeInsets.all(32),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 30, offset: const Offset(0, 15))],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Send us a Message', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF1E293B))),
+          const SizedBox(height: 24),
+          _fakeTextField('Your Name'),
+          const SizedBox(height: 16),
+          _fakeTextField('Email Address'),
+          const SizedBox(height: 16),
+          _fakeTextField('Message', maxLines: 3),
+          const SizedBox(height: 24),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF1E293B),
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              child: const Text('Send Message', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _fakeTextField(String hint, {int maxLines = 1}) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: maxLines > 1 ? 16 : 0),
+      decoration: BoxDecoration(color: const Color(0xFFF1F5F9), borderRadius: BorderRadius.circular(12)),
+      child: TextField(
+        maxLines: maxLines,
+        decoration: InputDecoration(hintText: hint, border: InputBorder.none, hintStyle: TextStyle(color: Colors.grey.shade500, fontSize: 15)),
       ),
     );
   }
 
 
   Widget _buildSpotlightSection(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 1000;
+
     final spotlightItems = [
       {'title': 'Express Laundry', 'subtitle': '24 Hour Delivery', 'color': const Color(0xFFE3F2FD), 'icon': Icons.local_laundry_service, 'textColor': const Color(0xFF1565C0)},
       {'title': 'Premium Dry Clean', 'subtitle': 'Designer Wear Care', 'color': const Color(0xFFFCE4EC), 'icon': Icons.dry_cleaning, 'textColor': const Color(0xFFC2185B)},
@@ -691,43 +805,71 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
     ];
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
-      color: const Color(0xFFF8FAFC), // Ultra light slate background
+      padding: EdgeInsets.symmetric(
+        vertical: isMobile ? 40 : 60, 
+        horizontal: isMobile ? 20 : 40
+      ),
+      color: const Color(0xFFF8FAFC),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1250),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
             children: [
               Text(
                 'In the Spotlight',
+                textAlign: isMobile ? TextAlign.center : TextAlign.start,
                 style: GoogleFonts.inter(
-                  fontSize: 36,
+                  fontSize: isMobile ? 28 : 36,
                   fontWeight: FontWeight.bold,
-                  color: const Color(0xFF475569), // Matches the image text color
+                  color: const Color(0xFF475569),
                   letterSpacing: -0.5,
                 ),
               ),
               const SizedBox(height: 50),
-              Row(
-                children: spotlightItems.asMap().entries.map((entry) {
-                  final index = entry.key;
-                  final item = entry.value;
-                  return Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(right: index == spotlightItems.length - 1 ? 0 : 20),
-                      child: _SpotlightCard(
-                        title: item['title'] as String,
-                        subtitle: item['subtitle'] as String,
-                        icon: item['icon'] as IconData,
-                        baseColor: item['color'] as Color,
-                        textColor: item['textColor'] as Color,
-                        onTap: () => context.push('/category/${index + 1}'),
+              if (isMobile)
+                SizedBox(
+                  height: 220,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: spotlightItems.length,
+                    separatorBuilder: (_, __) => const SizedBox(width: 15),
+                    itemBuilder: (context, index) {
+                      final item = spotlightItems[index];
+                      return SizedBox(
+                        width: 200,
+                        child: _SpotlightCard(
+                          title: item['title'] as String,
+                          subtitle: item['subtitle'] as String,
+                          icon: item['icon'] as IconData,
+                          baseColor: item['color'] as Color,
+                          textColor: item['textColor'] as Color,
+                          onTap: () => context.push('/category/${index + 1}'),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              else
+                Row(
+                  children: spotlightItems.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final item = entry.value;
+                    return Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(right: index == spotlightItems.length - 1 ? 0 : 20),
+                        child: _SpotlightCard(
+                          title: item['title'] as String,
+                          subtitle: item['subtitle'] as String,
+                          icon: item['icon'] as IconData,
+                          baseColor: item['color'] as Color,
+                          textColor: item['textColor'] as Color,
+                          onTap: () => context.push('/category/${index + 1}'),
+                        ),
                       ),
-                    ),
-                  );
-                }).toList(),
-              ),
+                    );
+                  }).toList(),
+                ),
             ],
           ),
         ),
@@ -736,174 +878,249 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
   }
 
   Widget _buildOffersSection(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 1000;
+
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 40), // User requested 10 padding
+      padding: EdgeInsets.symmetric(
+        vertical: isMobile ? 40 : 60, 
+        horizontal: isMobile ? 20 : 40
+      ),
       color: Colors.white,
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1300),
-          child: IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Left: Large Hero Banner
-                Expanded(
-                  flex: 3, // Roughly 60%
-                  child: _OfferHeroBanner(
+          child: isMobile 
+            ? Column(
+                children: [
+                   _OfferHeroBanner(
                     tagline: 'PREMIUM CARE.',
                     title: 'Clino Luxuries:\nThe Silk Edit.',
-                    priceText: 'Starting at ₹299.00 or ₹49/mo.\nfor 6 mo. Footnote*',
+                    priceText: 'Starting at ₹299.00',
                     imageUrl: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?q=80&w=800&auto=format&fit=crop',
                     btnText: 'EXPLORE NOW',
                     onTap: () {},
                   ),
-                ),
-                const SizedBox(width: 15),
-                // Right: 2x2 Grid of Small Banners
-                Expanded(
-                  flex: 2, // Roughly 40%
-                  child: Column(
+                  const SizedBox(height: 15),
+                  GridView.count(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 15,
+                    mainAxisSpacing: 15,
+                    childAspectRatio: 0.75, // More vertical room for text
                     children: [
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Expanded(child: _SmallOfferCard(
-                              discount: '25% off',
-                              desc: 'Bring back the\nshine of your jewelry set',
-                              imageUrl: 'https://images.unsplash.com/photo-1515562141207-7a18b5ce7142?q=80&w=400&auto=format&fit=crop', // Jewelry/Watch style
-                              color: const Color(0xFFC084FC).withOpacity(0.2), // Light Purple
-                            )),
-                            const SizedBox(width: 15),
-                            Expanded(child: _SmallOfferCard(
-                              imageUrl: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=400&auto=format&fit=crop', // Accessories
-                              color: const Color(0xFF0F172A), // Dark Slate
-                              isDark: true,
-                            )),
-                          ],
-                        ),
+                      _SmallOfferCard(
+                        discount: '25% off',
+                        desc: 'Bring back the\nshine',
+                        imageUrl: 'https://images.unsplash.com/photo-1515562141207-7a18b5ce7142?q=80&w=400&auto=format&fit=crop',
+                        color: const Color(0xFFC084FC).withOpacity(0.2),
                       ),
-                      const SizedBox(height: 15),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Expanded(child: _SmallOfferCard(
-                              imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400&auto=format&fit=crop', // Shoes
-                              color: const Color(0xFF365314), // Dark Olive
-                              isDark: true,
-                            )),
-                            const SizedBox(width: 15),
-                            Expanded(child: _SmallOfferCard(
-                              title: 'SINGULARITY',
-                              subtitle: 'Well-Defined',
-                              imageUrl: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=400&auto=format&fit=crop', // High fashion
-                              color: const Color(0xFFFDE68A).withOpacity(0.3), // Light gold
-                            )),
-                          ],
-                        ),
+                      _SmallOfferCard(
+                        imageUrl: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=400&auto=format&fit=crop',
+                        color: const Color(0xFF0F172A),
+                        isDark: true,
+                      ),
+                      _SmallOfferCard(
+                        imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400&auto=format&fit=crop',
+                        color: const Color(0xFF365314),
+                        isDark: true,
+                      ),
+                      _SmallOfferCard(
+                        title: 'SINGULARITY',
+                        subtitle: 'Well-Defined',
+                        imageUrl: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=400&auto=format&fit=crop',
+                        color: const Color(0xFFFDE68A).withOpacity(0.3),
                       ),
                     ],
                   ),
+                ],
+              )
+            : IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Left: Large Hero Banner
+                    Expanded(
+                      flex: 3,
+                      child: _OfferHeroBanner(
+                        tagline: 'PREMIUM CARE.',
+                        title: 'Clino Luxuries:\nThe Silk Edit.',
+                        priceText: 'Starting at ₹299.00 or ₹49/mo.\nfor 6 mo. Footnote*',
+                        imageUrl: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?q=80&w=800&auto=format&fit=crop',
+                        btnText: 'EXPLORE NOW',
+                        onTap: () {},
+                      ),
+                    ),
+                    const SizedBox(width: 15),
+                    // Right: 2x2 Grid of Small Banners
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Expanded(child: _SmallOfferCard(
+                                  discount: '25% off',
+                                  desc: 'Bring back the\nshine of your jewelry set',
+                                  imageUrl: 'https://images.unsplash.com/photo-1515562141207-7a18b5ce7142?q=80&w=400&auto=format&fit=crop',
+                                  color: const Color(0xFFC084FC).withOpacity(0.2),
+                                )),
+                                const SizedBox(width: 15),
+                                Expanded(child: _SmallOfferCard(
+                                  imageUrl: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=400&auto=format&fit=crop',
+                                  color: const Color(0xFF0F172A),
+                                  isDark: true,
+                                )),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Expanded(child: _SmallOfferCard(
+                                  imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400&auto=format&fit=crop',
+                                  color: const Color(0xFF365314),
+                                  isDark: true,
+                                )),
+                                const SizedBox(width: 15),
+                                Expanded(child: _SmallOfferCard(
+                                  title: 'SINGULARITY',
+                                  subtitle: 'Well-Defined',
+                                  imageUrl: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=400&auto=format&fit=crop',
+                                  color: const Color(0xFFFDE68A).withOpacity(0.3),
+                                )),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
         ),
       ),
     );
   }
 
   Widget _buildMostBookedSection(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 1000;
+
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
-      color: const Color(0xFFF8FAFC), // Ultra light slate
+      padding: EdgeInsets.symmetric(
+        vertical: isMobile ? 60 : 80, 
+        horizontal: isMobile ? 20 : 40
+      ),
+      color: const Color(0xFFF8FAFC),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1300),
           child: Column(
             children: [
-              // Header with "View All"
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              // Header
+              isMobile 
+                ? Column(
                     children: [
-                      Text(
-                        'CUSTOMER FAVORITES',
-                        style: GoogleFonts.inter(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFF6366F1),
-                          letterSpacing: 2,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        'Most Booked Services',
-                        style: GoogleFonts.playfairDisplay(
-                          fontSize: 42,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFF1E293B),
-                        ),
-                      ),
+                      _buildMostBookedHeader(),
+                      const SizedBox(height: 20),
+                      _buildMostBookedViewAll(context),
+                    ],
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      _buildMostBookedHeader(),
+                      _buildMostBookedViewAll(context),
                     ],
                   ),
-                  TextButton.icon(
-                    onPressed: () => context.push('/services'),
-                    icon: const Text('Explore All Services', style: TextStyle(fontWeight: FontWeight.bold)),
-                    label: const Icon(Icons.arrow_forward, size: 18),
-                    style: TextButton.styleFrom(
-                      foregroundColor: const Color(0xFF1E293B),
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                    ),
-                  ),
-                ],
-              ),
               const SizedBox(height: 50),
               // Services Grid
-              Row(
-                children: [
-                  Expanded(child: _MostBookedServiceCard(
-                    name: 'Premium Wash & Fold',
-                    price: '49',
-                    rating: 4.8,
-                    reviews: '2.4k',
-                    imageUrl: 'https://images.unsplash.com/photo-1521335629791-ce4aec67dd15?q=80&w=800&auto=format&fit=crop',
-                    onTap: () {},
-                  )),
-                  const SizedBox(width: 25),
-                  Expanded(child: _MostBookedServiceCard(
-                    name: 'Express Dry Cleaning',
-                    price: '149',
-                    rating: 4.9,
-                    reviews: '1.8k',
-                    imageUrl: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?q=80&w=500&auto=format&fit=crop',
-                    onTap: () {},
-                  )),
-                  const SizedBox(width: 25),
-                  Expanded(child: _MostBookedServiceCard(
-                    name: 'Professional Shoe Spa',
-                    price: '299',
-                    rating: 4.7,
-                    reviews: '950',
-                    imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500&auto=format&fit=crop',
-                    onTap: () {},
-                  )),
-                  const SizedBox(width: 25),
-                  Expanded(child: _MostBookedServiceCard(
-                    name: 'Leather Jacket Gala',
-                    price: '999',
-                    rating: 5.0,
-                    reviews: '420',
-                    imageUrl: 'https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?q=80&w=800&auto=format&fit=crop',
-                    onTap: () {},
-                  )),
-                ],
-              ),
+              if (isMobile)
+                SizedBox(
+                  height: 480, // Increased height to prevent overflow
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      _buildMostBookedCard('Premium Wash & Fold', '49', 4.8, '2.4k', 'https://images.unsplash.com/photo-1521335629791-ce4aec67dd15?q=80&w=800&auto=format&fit=crop'),
+                      _buildMostBookedCard('Express Dry Cleaning', '149', 4.9, '1.8k', 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?q=80&w=500&auto=format&fit=crop'),
+                      _buildMostBookedCard('Professional Shoe Spa', '299', 4.7, '950', 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500&auto=format&fit=crop'),
+                      _buildMostBookedCard('Leather Jacket Gala', '999', 5.0, '420', 'https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?q=80&w=800&auto=format&fit=crop'),
+                    ],
+                  ),
+                )
+              else
+                Row(
+                  children: [
+                    Expanded(child: _buildMostBookedCard('Premium Wash & Fold', '49', 4.8, '2.4k', 'https://images.unsplash.com/photo-1521335629791-ce4aec67dd15?q=80&w=800&auto=format&fit=crop')),
+                    const SizedBox(width: 25),
+                    Expanded(child: _buildMostBookedCard('Express Dry Cleaning', '149', 4.9, '1.8k', 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?q=80&w=500&auto=format&fit=crop')),
+                    const SizedBox(width: 25),
+                    Expanded(child: _buildMostBookedCard('Professional Shoe Spa', '299', 4.7, '950', 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500&auto=format&fit=crop')),
+                    const SizedBox(width: 25),
+                    Expanded(child: _buildMostBookedCard('Leather Jacket Gala', '999', 5.0, '420', 'https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?q=80&w=800&auto=format&fit=crop')),
+                  ],
+                ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildMostBookedHeader() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'CUSTOMER FAVORITES',
+          style: GoogleFonts.inter(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF6366F1),
+            letterSpacing: 2,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Text(
+          'Most Booked Services',
+          style: GoogleFonts.playfairDisplay(
+            fontSize: 36,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF1E293B),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMostBookedViewAll(BuildContext context) {
+    return TextButton.icon(
+      onPressed: () => context.push('/services'),
+      icon: const Text('Explore All Services', style: TextStyle(fontWeight: FontWeight.bold)),
+      label: const Icon(Icons.arrow_forward, size: 18),
+      style: TextButton.styleFrom(
+        foregroundColor: const Color(0xFF1E293B),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      ),
+    );
+  }
+
+  Widget _buildMostBookedCard(String name, String price, double rating, String reviews, String imageUrl) {
+    return Container(
+      width: 280,
+      margin: const EdgeInsets.only(right: 20),
+      child: _MostBookedServiceCard(
+        name: name,
+        price: price,
+        rating: rating,
+        reviews: reviews,
+        imageUrl: imageUrl,
+        onTap: () {},
       ),
     );
   }
@@ -912,8 +1129,14 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
 
 
   Widget _buildWhyChooseUsSection(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 1000;
+
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
+      padding: EdgeInsets.symmetric(
+        vertical: isMobile ? 60 : 80, 
+        horizontal: isMobile ? 20 : 40
+      ),
       color: const Color(0xFFFDFCFB),
       child: Center(
         child: ConstrainedBox(
@@ -931,54 +1154,92 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
                       letterSpacing: 2,
                     ),
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 12),
                   Text(
                     'Why Choose Us',
+                    textAlign: TextAlign.center,
                     style: GoogleFonts.playfairDisplay(
-                      fontSize: 48,
+                      fontSize: isMobile ? 32 : 48,
                       fontWeight: FontWeight.bold,
                       color: const Color(0xFF1E293B),
                     ),
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 12),
                   Text(
                     'We provide the highest standards of care for your beloved garments.',
-                    style: TextStyle(fontSize: 18, color: Colors.grey.shade600),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: isMobile ? 16 : 18, color: Colors.grey.shade600),
                   ),
                 ],
               ),
-              const SizedBox(height: 30),
-              Row(
-                children: [
-                   Expanded(child: _WhyChooseCard(
-                     icon: Icons.verified_user_rounded, 
-                     title: 'Quality Assurance', 
-                     subtitle: 'Highest quality standards for your premium clothes',
-                     color: const Color(0xFF6366F1),
-                   )),
-                   const SizedBox(width: 24),
-                   Expanded(child: _WhyChooseCard(
-                     icon: Icons.timer_rounded, 
-                     title: 'On Time Delivery', 
-                     subtitle: 'Reliable schedule that respects your precious time',
-                     color: const Color(0xFFEC4899),
-                   )),
-                   const SizedBox(width: 24),
-                   Expanded(child: _WhyChooseCard(
-                     icon: Icons.eco_rounded, 
-                     title: 'Eco Friendly', 
-                     subtitle: 'Sustainable practices and non-toxic cleaning agents',
-                     color: const Color(0xFF14B8A6),
-                   )),
-                   const SizedBox(width: 24),
-                   Expanded(child: _WhyChooseCard(
-                     icon: Icons.payments_rounded, 
-                     title: 'Fair Pricing', 
-                     subtitle: 'Premium laundry service at competitive market rates',
-                     color: const Color(0xFFF59E0B),
-                   )),
-                ],
-              ),
+              const SizedBox(height: 50),
+              if (isMobile)
+                GridView.count(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 15,
+                  mainAxisSpacing: 15,
+                  childAspectRatio: 0.65, // More vertical room for mobile
+                  children: [
+                    _WhyChooseCard(
+                      icon: Icons.verified_user_rounded, 
+                      title: 'Quality Assurance', 
+                      subtitle: 'Premium standards',
+                      color: const Color(0xFF6366F1),
+                    ),
+                    _WhyChooseCard(
+                      icon: Icons.timer_rounded, 
+                      title: 'On Time Delivery', 
+                      subtitle: 'Reliable schedule',
+                      color: const Color(0xFFEC4899),
+                    ),
+                    _WhyChooseCard(
+                      icon: Icons.eco_rounded, 
+                      title: 'Eco Friendly', 
+                      subtitle: 'Sustainable care',
+                      color: const Color(0xFF14B8A6),
+                    ),
+                    _WhyChooseCard(
+                      icon: Icons.payments_rounded, 
+                      title: 'Fair Pricing', 
+                      subtitle: 'Competitive rates',
+                      color: const Color(0xFFF59E0B),
+                    ),
+                  ],
+                )
+              else
+                Row(
+                  children: [
+                    Expanded(child: _WhyChooseCard(
+                      icon: Icons.verified_user_rounded, 
+                      title: 'Quality Assurance', 
+                      subtitle: 'Highest quality standards for your premium clothes',
+                      color: const Color(0xFF6366F1),
+                    )),
+                    const SizedBox(width: 24),
+                    Expanded(child: _WhyChooseCard(
+                      icon: Icons.timer_rounded, 
+                      title: 'On Time Delivery', 
+                      subtitle: 'Reliable schedule that respects your precious time',
+                      color: const Color(0xFFEC4899),
+                    )),
+                    const SizedBox(width: 24),
+                    Expanded(child: _WhyChooseCard(
+                      icon: Icons.eco_rounded, 
+                      title: 'Eco Friendly', 
+                      subtitle: 'Sustainable practices and non-toxic cleaning agents',
+                      color: const Color(0xFF14B8A6),
+                    )),
+                    const SizedBox(width: 24),
+                    Expanded(child: _WhyChooseCard(
+                      icon: Icons.payments_rounded, 
+                      title: 'Fair Pricing', 
+                      subtitle: 'Premium laundry service at competitive market rates',
+                      color: const Color(0xFFF59E0B),
+                    )),
+                  ],
+                ),
             ],
           ),
         ),
@@ -987,9 +1248,15 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
   }
 
   Widget _buildTestimonialsSection(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 1000;
+
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-      color: const Color(0xFF1E293B), // Premium dark mode for testimonials
+      padding: EdgeInsets.symmetric(
+        vertical: isMobile ? 60 : 100, 
+        horizontal: isMobile ? 20 : 40
+      ),
+      color: const Color(0xFF1E293B),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1300),
@@ -1006,45 +1273,41 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
                       letterSpacing: 3,
                     ),
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 12),
                   Text(
                     'What Our Customers Say',
+                    textAlign: TextAlign.center,
                     style: GoogleFonts.playfairDisplay(
-                      fontSize: 48,
+                      fontSize: isMobile ? 32 : 48,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  Expanded(child: _PremiumTestimonialCard(
-                    name: 'Sarah J.', 
-                    location: 'Mumbai', 
-                    rating: 5, 
-                    text: 'Absolutely love the service! My clothes have never looked better. The pickup and delivery is super convenient.',
-                    avatarUrl: 'https://i.pravatar.cc/150?u=sarah',
-                  )),
-                  const SizedBox(width: 32),
-                  Expanded(child: _PremiumTestimonialCard(
-                    name: 'Rahul M.', 
-                    location: 'Bangalore', 
-                    rating: 5, 
-                    text: 'The 6 stage process really makes a difference. Stains I thought were permanent are gone. Highly recommended!',
-                    avatarUrl: 'https://i.pravatar.cc/150?u=rahul',
-                  )),
-                  const SizedBox(width: 32),
-                  Expanded(child: _PremiumTestimonialCard(
-                    name: 'Priya S.', 
-                    location: 'Delhi', 
-                    rating: 5, 
-                    text: 'Great app experience and very professional staff. The real-time tracking helps me plan my day better.',
-                    avatarUrl: 'https://i.pravatar.cc/150?u=priya',
-                  )),
-                ],
-              ),
+              const SizedBox(height: 50),
+              if (isMobile)
+                SizedBox(
+                  height: 300,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      _buildTestimonialCard('Sarah J.', 'Mumbai', 5, 'Absolutely love the service! My clothes have never looked better.', 'https://i.pravatar.cc/150?u=sarah'),
+                      _buildTestimonialCard('Rahul M.', 'Bangalore', 5, 'The 6 stage process really makes a difference. Stains are gone.', 'https://i.pravatar.cc/150?u=rahul'),
+                      _buildTestimonialCard('Priya S.', 'Delhi', 5, 'Great app experience and very professional staff.', 'https://i.pravatar.cc/150?u=priya'),
+                    ],
+                  ),
+                )
+              else
+                Row(
+                  children: [
+                    Expanded(child: _buildTestimonialCard('Sarah J.', 'Mumbai', 5, 'Absolutely love the service! My clothes have never looked better. The pickup and delivery is super convenient.', 'https://i.pravatar.cc/150?u=sarah')),
+                    const SizedBox(width: 32),
+                    Expanded(child: _buildTestimonialCard('Rahul M.', 'Bangalore', 5, 'The 6 stage process really makes a difference. Stains I thought were permanent are gone. Highly recommended!', 'https://i.pravatar.cc/150?u=rahul')),
+                    const SizedBox(width: 32),
+                    Expanded(child: _buildTestimonialCard('Priya S.', 'Delhi', 5, 'Great app experience and very professional staff. The real-time tracking helps me plan my day better.', 'https://i.pravatar.cc/150?u=priya')),
+                  ],
+                ),
             ],
           ),
         ),
@@ -1052,7 +1315,24 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
     );
   }
 
+  Widget _buildTestimonialCard(String name, String location, int rating, String text, String avatarUrl) {
+    return Container(
+      width: 350,
+      margin: const EdgeInsets.only(right: 20),
+      child: _PremiumTestimonialCard(
+        name: name,
+        location: location,
+        rating: rating,
+        text: text,
+        avatarUrl: avatarUrl,
+      ),
+    );
+  }
+
   Widget _buildStatsAndDownloadSection(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 1000;
+
     final stats = [
       {'value': '50K+', 'label': 'Happy Customers', 'icon': Icons.people_alt_rounded},
       {'value': '1000+', 'label': 'Verified Pros', 'icon': Icons.verified_user_rounded},
@@ -1061,7 +1341,10 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
     ];
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 40),
+      padding: EdgeInsets.symmetric(
+        vertical: isMobile ? 60 : 100, 
+        horizontal: isMobile ? 20 : 40
+      ),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [Color(0xFF0F172A), Color(0xFF1E293B), Color(0xFF334155)],
@@ -1075,131 +1358,164 @@ class _WebHomeScreenState extends ConsumerState<WebHomeScreen> {
           Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 1300),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: stats.map((s) => Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.05),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(s['icon'] as IconData, color: const Color(0xFF818CF8), size: 32),
-                    ),
-                    const SizedBox(height: 24),
-                    Text(
-                      s['value'] as String,
-                      style: GoogleFonts.inter(fontSize: 52, fontWeight: FontWeight.w900, color: Colors.white),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      s['label'] as String,
-                      style: GoogleFonts.inter(fontSize: 16, color: Colors.white.withOpacity(0.6), fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                )).toList(),
-              ),
+              child: isMobile 
+                ? GridView.count(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 30,
+                    crossAxisSpacing: 20,
+                    children: stats.map((s) => _buildStatItem(s, isMobile)).toList(),
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: stats.map((s) => _buildStatItem(s, isMobile)).toList(),
+                  ),
             ),
           ),
-          const SizedBox(height: 50),
-          // App Download Row
+          SizedBox(height: isMobile ? 80 : 100),
+          // App Download UI
           Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 1200),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'EXPERIENCE CLOUD WASH ON THE GO',
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFF818CF8),
-                            letterSpacing: 3,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'Your Personal Laundry\nManager in Your Pocket',
-                          style: GoogleFonts.playfairDisplay(
-                            fontSize: 48,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            height: 1.1,
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        Text(
-                          'Book, track, and manage your laundry needs with a single tap. Join 50,000+ happy users today.',
-                          style: TextStyle(fontSize: 18, color: Colors.white.withOpacity(0.7), height: 1.6),
-                        ),
-                        const SizedBox(height: 48),
-                        Row(
-                          children: [
-                            _AppStoreBadge(
-                              icon: Icons.apple, 
-                              text: 'App Store', 
-                              subtext: 'Download on the',
-                              color: Colors.white,
-                              onTap: () {},
-                            ),
-                            const SizedBox(width: 20),
-                            _AppStoreBadge(
-                              icon: Icons.play_arrow_rounded, 
-                              text: 'Google Play', 
-                              subtext: 'Get it on',
-                              color: Colors.white,
-                              onTap: () {},
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 100),
-                  // App Mockup with floating effect
-                  Stack(
-                    alignment: Alignment.center,
+              child: isMobile 
+                ? Column(
                     children: [
-                      Container(
-                        width: 400,
-                        height: 400,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF818CF8).withOpacity(0.1),
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      Container(
-                        width: 320,
-                        height: 600,
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF0F172A),
-                          borderRadius: BorderRadius.circular(48),
-                          boxShadow: [
-                            BoxShadow(color: Colors.black.withOpacity(0.5), blurRadius: 40, offset: const Offset(0, 20)),
-                          ],
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(36),
-                          child: Image.network(
-                            'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=800&auto=format&fit=crop',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
+                      _buildDownloadContent(isMobile),
+                      const SizedBox(height: 60),
+                      _buildDownloadAppMockup(isMobile),
+                    ],
+                  )
+                : Row(
+                    children: [
+                      Expanded(child: _buildDownloadContent(isMobile)),
+                      const SizedBox(width: 100),
+                      _buildDownloadAppMockup(isMobile),
                     ],
                   ),
-                ],
-              ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildStatItem(Map<String, dynamic> s, bool isMobile) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: EdgeInsets.all(isMobile ? 12 : 16),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.05),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(s['icon'] as IconData, color: const Color(0xFF818CF8), size: isMobile ? 24 : 32),
+        ),
+        SizedBox(height: isMobile ? 12 : 24),
+        Text(
+          s['value'] as String,
+          style: GoogleFonts.inter(fontSize: isMobile ? 28 : 52, fontWeight: FontWeight.w900, color: Colors.white),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          s['label'] as String,
+          textAlign: TextAlign.center,
+          style: GoogleFonts.inter(fontSize: isMobile ? 14 : 16, color: Colors.white.withOpacity(0.6), fontWeight: FontWeight.w500),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDownloadContent(bool isMobile) {
+    return Column(
+      crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      children: [
+        Text(
+          'EXPERIENCE CLOUD WASH ON THE GO',
+          textAlign: isMobile ? TextAlign.center : TextAlign.start,
+          style: GoogleFonts.inter(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF818CF8),
+            letterSpacing: 3,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          'Your Personal Laundry\nManager in Your Pocket',
+          textAlign: isMobile ? TextAlign.center : TextAlign.start,
+          style: GoogleFonts.playfairDisplay(
+            fontSize: isMobile ? 32 : 48,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            height: 1.1,
+          ),
+        ),
+        const SizedBox(height: 24),
+        Text(
+          'Book, track, and manage your laundry needs with a single tap. Join 50,000+ happy users today.',
+          textAlign: isMobile ? TextAlign.center : TextAlign.start,
+          style: TextStyle(fontSize: isMobile ? 16 : 18, color: Colors.white.withOpacity(0.7), height: 1.6),
+        ),
+        const SizedBox(height: 48),
+        Wrap(
+          spacing: 15,
+          runSpacing: 15,
+          alignment: isMobile ? WrapAlignment.center : WrapAlignment.start,
+          children: [
+            _AppStoreBadge(
+              icon: Icons.apple, 
+              text: 'App Store', 
+              subtext: 'Download',
+              color: Colors.white,
+              onTap: () {},
+            ),
+            _AppStoreBadge(
+              icon: Icons.play_arrow_rounded, 
+              text: 'Google Play', 
+              subtext: 'Get it on',
+              color: Colors.white,
+              onTap: () {},
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDownloadAppMockup(bool isMobile) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+          width: isMobile ? 280 : 400,
+          height: isMobile ? 280 : 400,
+          decoration: BoxDecoration(
+            color: const Color(0xFF818CF8).withOpacity(0.1),
+            shape: BoxShape.circle,
+          ),
+        ),
+        Container(
+          width: isMobile ? 240 : 320,
+          height: isMobile ? 450 : 600,
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: const Color(0xFF0F172A),
+            borderRadius: BorderRadius.circular(isMobile ? 36 : 48),
+            boxShadow: [
+              BoxShadow(color: Colors.black.withOpacity(0.5), blurRadius: 40, offset: const Offset(0, 20)),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(isMobile ? 24 : 36),
+            child: Image.network(
+              'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=800&auto=format&fit=crop',
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -1426,6 +1742,8 @@ class _CategoryItemState extends State<_CategoryItem> {
               Text(
                 widget.name, 
                 textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.inter(
                   fontWeight: FontWeight.bold, 
                   fontSize: 15,
@@ -1546,6 +1864,8 @@ class _SpotlightCardState extends State<_SpotlightCard> with SingleTickerProvide
                     // Title
                     Text(
                       widget.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.inter(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -1557,6 +1877,8 @@ class _SpotlightCardState extends State<_SpotlightCard> with SingleTickerProvide
                     // Subtitle
                     Text(
                       widget.subtitle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.inter(
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
@@ -1647,13 +1969,17 @@ class _ProcessStepCardState extends State<_ProcessStepCard> {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 1000;
+
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        width: 380,
-        height: 180,
+        width: isMobile ? screenWidth - 40 : 380,
+        height: isMobile ? null : 180,
+        constraints: const BoxConstraints(minHeight: 180),
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -1795,11 +2121,14 @@ class _ValueReasonCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text(
-                      title,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFF1E293B)),
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFF1E293B)),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                       decoration: BoxDecoration(
@@ -1985,11 +2314,18 @@ class _AppStoreBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = MediaQuery.of(context).size.width < 1000;
+    final bool isVerySmall = MediaQuery.of(context).size.width < 340;
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: EdgeInsets.symmetric(
+          horizontal: isVerySmall ? 12 : (isMobile ? 16 : 20), 
+          vertical: isMobile ? 8 : 12
+        ),
         decoration: BoxDecoration(
           color: Colors.black.withOpacity(0.8),
           borderRadius: BorderRadius.circular(12),
@@ -1998,19 +2334,27 @@ class _AppStoreBadge extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: Colors.white, size: 28),
-            const SizedBox(width: 12),
+            Icon(icon, color: Colors.white, size: isMobile ? 24 : 28),
+            SizedBox(width: isMobile ? 8 : 12),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   subtext,
-                  style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 10, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.6), 
+                    fontSize: isMobile ? 9 : 10, 
+                    fontWeight: FontWeight.w500
+                  ),
                 ),
                 Text(
                   text,
-                  style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    color: Colors.white, 
+                    fontSize: isMobile ? 13 : 16, 
+                    fontWeight: FontWeight.bold
+                  ),
                 ),
               ],
             ),
@@ -2231,6 +2575,8 @@ class _OfferHeroBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = MediaQuery.of(context).size.width < 1000;
+    
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -2240,7 +2586,7 @@ class _OfferHeroBanner extends StatelessWidget {
         ),
       ),
       child: Container(
-        padding: const EdgeInsets.all(50),
+        padding: EdgeInsets.all(isMobile ? 20 : 50),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           gradient: LinearGradient(
@@ -2261,44 +2607,51 @@ class _OfferHeroBanner extends StatelessWidget {
             Text(
               tagline,
               style: GoogleFonts.inter(
-                fontSize: 16,
+                fontSize: isMobile ? 12 : 16,
                 fontWeight: FontWeight.bold,
                 color: const Color(0xFF1E3A5F),
                 letterSpacing: 2,
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: isMobile ? 12 : 24),
             Text(
               title,
               style: GoogleFonts.playfairDisplay(
-                fontSize: 52,
+                fontSize: isMobile ? 28 : 52,
                 fontWeight: FontWeight.bold,
                 color: const Color(0xFF1E293B),
                 height: 1.1,
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: isMobile ? 12 : 24),
             Text(
               priceText,
               style: GoogleFonts.inter(
-                fontSize: 16,
+                fontSize: isMobile ? 13 : 16,
                 color: Colors.grey.shade700,
                 height: 1.5,
               ),
             ),
-            const SizedBox(height: 48),
+            SizedBox(height: isMobile ? 24 : 48),
             ElevatedButton(
               onPressed: onTap,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF134E4A),
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 22),
+                padding: EdgeInsets.symmetric(
+                  horizontal: isMobile ? 20 : 40, 
+                  vertical: isMobile ? 12 : 22
+                ),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                 elevation: 0,
               ),
               child: Text(
                 btnText,
-                style: const TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold, 
+                  letterSpacing: 1,
+                  fontSize: isMobile ? 12 : 14,
+                ),
               ),
             ),
           ],
@@ -2434,6 +2787,7 @@ class _MostBookedServiceCardState extends State<_MostBookedServiceCard> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = MediaQuery.of(context).size.width < 1000;
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
@@ -2454,6 +2808,7 @@ class _MostBookedServiceCardState extends State<_MostBookedServiceCard> {
             ],
           ),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Image and Rating Overlay
@@ -2497,14 +2852,16 @@ class _MostBookedServiceCardState extends State<_MostBookedServiceCard> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.all(24.0),
+                padding: EdgeInsets.all(isMobile ? 16.0 : 24.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       widget.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.inter(
-                        fontSize: 20,
+                        fontSize: isMobile ? 18 : 20,
                         fontWeight: FontWeight.bold,
                         color: const Color(0xFF1E293B),
                       ),
@@ -2603,12 +2960,14 @@ class _WhyChooseCardState extends State<_WhyChooseCard> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = MediaQuery.of(context).size.width < 1000;
+    
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        padding: const EdgeInsets.all(32),
+        padding: EdgeInsets.all(isMobile ? 12 : 32),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(24),
@@ -2621,6 +2980,7 @@ class _WhyChooseCardState extends State<_WhyChooseCard> {
           ],
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             AnimatedContainer(
               duration: const Duration(milliseconds: 300),

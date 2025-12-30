@@ -44,11 +44,16 @@ class WebServicesPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categoriesAsync = ref.watch(categoriesProvider);
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 1000;
 
     return WebLayout(
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 40),
+        padding: EdgeInsets.symmetric(
+          vertical: isMobile ? 40 : 60, 
+          horizontal: isMobile ? 20 : 40
+        ),
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 1200),
@@ -56,10 +61,10 @@ class WebServicesPage extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Header
-                const Text(
+                Text(
                   'Our Services',
                   style: TextStyle(
-                    fontSize: 36,
+                    fontSize: isMobile ? 32 : 36,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -67,7 +72,7 @@ class WebServicesPage extends ConsumerWidget {
                 Text(
                   'Professional home services at your doorstep',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: isMobile ? 15 : 18,
                     color: Colors.grey.shade600,
                   ),
                 ),
@@ -97,71 +102,116 @@ class WebServicesPage extends ConsumerWidget {
                 const SizedBox(height: 80),
 
                 // How It Works Section
-                const Text(
+                Text(
                   'How It Works',
                   style: TextStyle(
-                    fontSize: 28,
+                    fontSize: isMobile ? 24 : 28,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 32),
-                Row(
-                  children: [
-                    Expanded(child: _StepCard(number: '1', title: 'Choose Service', description: 'Select the service you need from our wide range of categories.')),
-                    const SizedBox(width: 24),
-                    Expanded(child: _StepCard(number: '2', title: 'Book Time Slot', description: 'Pick a convenient date and time that works for you.')),
-                    const SizedBox(width: 24),
-                    Expanded(child: _StepCard(number: '3', title: 'Get It Done', description: 'Our verified professional arrives and completes the job.')),
-                  ],
-                ),
+                isMobile 
+                  ? Column(
+                      children: [
+                        _StepCard(number: '1', title: 'Choose Service', description: 'Select the service you need from our wide range of categories.'),
+                        const SizedBox(height: 20),
+                        _StepCard(number: '2', title: 'Book Time Slot', description: 'Pick a convenient date and time that works for you.'),
+                        const SizedBox(height: 20),
+                        _StepCard(number: '3', title: 'Get It Done', description: 'Our verified professional arrives and completes the job.'),
+                      ],
+                    )
+                  : Row(
+                      children: [
+                        Expanded(child: _StepCard(number: '1', title: 'Choose Service', description: 'Select the service you need from our wide range of categories.')),
+                        const SizedBox(width: 24),
+                        Expanded(child: _StepCard(number: '2', title: 'Book Time Slot', description: 'Pick a convenient date and time that works for you.')),
+                        const SizedBox(width: 24),
+                        Expanded(child: _StepCard(number: '3', title: 'Get It Done', description: 'Our verified professional arrives and completes the job.')),
+                      ],
+                    ),
 
                 const SizedBox(height: 80),
 
                 // CTA Section
                 Container(
-                  padding: const EdgeInsets.all(40),
+                  padding: EdgeInsets.all(isMobile ? 24 : 40),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [AppTheme.primary, AppTheme.primaryDark],
                     ),
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Need a Custom Service?',
-                              style: TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
+                  child: isMobile 
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Need a Custom Service?',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
-                            const SizedBox(height: 8),
-                            Text(
-                              "Can't find what you're looking for? Contact us for custom solutions.",
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.white.withOpacity(0.9),
-                              ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            "Can't find what you're looking for? Contact us for custom solutions.",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.white.withOpacity(0.9),
                             ),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(height: 32),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () => context.push('/contact'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                foregroundColor: AppTheme.primary,
+                                padding: const EdgeInsets.symmetric(vertical: 16),
+                              ),
+                              child: const Text('Contact Us', style: TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                          ),
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Need a Custom Service?',
+                                  style: TextStyle(
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  "Can't find what you're looking for? Contact us for custom solutions.",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white.withOpacity(0.9),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => context.push('/contact'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              foregroundColor: AppTheme.primary,
+                              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                            ),
+                            child: const Text('Contact Us', style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                        ],
                       ),
-                      ElevatedButton(
-                        onPressed: () => context.push('/contact'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: AppTheme.primary,
-                          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                        ),
-                        child: const Text('Contact Us', style: TextStyle(fontWeight: FontWeight.bold)),
-                      ),
-                    ],
-                  ),
                 ),
               ],
             ),
@@ -210,6 +260,8 @@ class _ServiceCategoryCardState extends State<_ServiceCategoryCard> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = MediaQuery.of(context).size.width < 1000;
+    
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
@@ -217,8 +269,8 @@ class _ServiceCategoryCardState extends State<_ServiceCategoryCard> {
         onTap: widget.onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          width: 280,
-          padding: const EdgeInsets.all(24),
+          width: isMobile ? (MediaQuery.of(context).size.width - 64) / 2 : 280,
+          padding: EdgeInsets.all(isMobile ? 16 : 24),
           transform: Matrix4.identity()..scale(_hovered ? 1.03 : 1.0),
           decoration: BoxDecoration(
             color: Colors.white,

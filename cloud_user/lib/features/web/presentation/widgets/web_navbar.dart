@@ -6,17 +6,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WebNavBar extends ConsumerWidget {
-  const WebNavBar({super.key});
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  const WebNavBar({super.key, required this.scaffoldKey});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 1000;
+
     return ClipRRect(
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          height: 100, // Slightly taller for more breathing room
-          padding: const EdgeInsets.symmetric(horizontal: 50),
+          height: isMobile ? 80 : 100,
+          padding: EdgeInsets.symmetric(horizontal: isMobile ? 20 : 50),
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.8),
             border: Border(
@@ -31,24 +35,30 @@ class WebNavBar extends ConsumerWidget {
               constraints: const BoxConstraints(maxWidth: 1400),
               child: Row(
                 children: [
+                   if (isMobile) 
+                    IconButton(
+                      icon: const Icon(Icons.menu, color: AppTheme.primary),
+                      onPressed: () => scaffoldKey.currentState?.openDrawer(),
+                    ),
+                  
                   // Logo Container (Left Aligned)
                   Expanded(
-                    flex: 1,
+                    flex: isMobile ? 2 : 1,
                     child: Align(
-                      alignment: Alignment.centerLeft,
+                      alignment: isMobile ? Alignment.center : Alignment.centerLeft,
                       child: InkWell(
                         onTap: () => context.go('/'),
                         hoverColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         child: Image.asset(
                           'assets/images/logo.png',
-                          height: 80, // Increased logo size significantly
+                          height: isMobile ? 50 : 80,
                           fit: BoxFit.contain,
                           errorBuilder: (_, __, ___) => Text(
                             'CLINOWASH',
                             style: GoogleFonts.poppins(
                               fontWeight: FontWeight.bold,
-                              fontSize: 26,
+                              fontSize: isMobile ? 20 : 26,
                               color: AppTheme.primary,
                               letterSpacing: 1.5,
                             ),
@@ -58,17 +68,17 @@ class WebNavBar extends ConsumerWidget {
                     ),
                   ),
                   
-                  // Nav Links (Perfectly Centered)
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _NavLink(label: 'Home', onTap: () => context.go('/')),
-                      _NavLink(label: 'Services', onTap: () => context.go('/services')),
-                      _NavLink(label: 'How it Works', onTap: () => context.go('/how-it-works')),
-                      _NavLink(label: 'Pricing', onTap: () => context.go('/pricing')),
-                      _NavLink(label: 'Contact', onTap: () => context.go('/contact')),
-                    ],
-                  ),
+                  // Nav Links (Hidden on Mobile)
+                  if (!isMobile)
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _NavLink(label: 'Home', onTap: () => context.go('/')),
+                        _NavLink(label: 'Services', onTap: () => context.go('/services')),
+                        _NavLink(label: 'Blog', onTap: () => context.go('/blog')),
+                        _NavLink(label: 'Contact', onTap: () => context.go('/contact')),
+                      ],
+                    ),
                   
                   // Action Group (Right Aligned)
                   Expanded(
@@ -78,21 +88,25 @@ class WebNavBar extends ConsumerWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          _NavActionButton(
-                            icon: Icons.search_rounded,
-                            onTap: () {},
-                          ),
-                          const SizedBox(width: 8),
-                          _NavActionButton(
-                            icon: Icons.account_circle_outlined,
-                            onTap: () => context.push('/profile'),
-                          ),
-                          const SizedBox(width: 24),
-
-                          // Schedule Button
-                          _ScheduleButton(
-                            onTap: () => context.go('/services'),
-                          ),
+                          if (!isMobile) ...[
+                            _NavActionButton(
+                              icon: Icons.search_rounded,
+                              onTap: () {},
+                            ),
+                            const SizedBox(width: 8),
+                            _NavActionButton(
+                              icon: Icons.account_circle_outlined,
+                              onTap: () => context.push('/profile'),
+                            ),
+                            const SizedBox(width: 24),
+                            _ScheduleButton(
+                              onTap: () => context.go('/services'),
+                            ),
+                          ] else 
+                            IconButton(
+                              icon: const Icon(Icons.account_circle_outlined, color: AppTheme.primary),
+                              onPressed: () => context.push('/profile'),
+                            ),
                         ],
                       ),
                     ),
