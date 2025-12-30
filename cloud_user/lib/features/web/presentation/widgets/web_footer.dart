@@ -118,19 +118,19 @@ class WebFooter extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              padding: const EdgeInsets.all(14),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: const Color(0xFF818CF8),
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.circular(20),
               ),
-              child: const Icon(Icons.waves_rounded, color: Colors.white, size: 48),
+              child: const Icon(Icons.waves_rounded, color: Colors.white, size: 64),
             ),
-            const SizedBox(width: 24),
+            const SizedBox(width: 32),
             Text(
               'Cloud Wash',
               style: GoogleFonts.inter(
                 color: const Color(0xFF1E293B),
-                fontSize: 48,
+                fontSize: 64,
                 fontWeight: FontWeight.w900,
                 letterSpacing: -0.5,
               ),

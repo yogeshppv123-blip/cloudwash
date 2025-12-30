@@ -14,109 +14,136 @@ class WebNavBar extends ConsumerWidget {
     final double screenWidth = MediaQuery.of(context).size.width;
     final bool isMobile = screenWidth < 1000;
 
-    return ClipRRect(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          height: isMobile ? 80 : 100,
-          padding: EdgeInsets.symmetric(horizontal: isMobile ? 20 : 50),
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.8),
-            border: Border(
-              bottom: BorderSide(
-                color: Colors.black.withOpacity(0.05),
-                width: 1,
-              ),
-            ),
-          ),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 1400),
-              child: Row(
-                children: [
-                   if (isMobile) 
-                    IconButton(
-                      icon: const Icon(Icons.menu, color: AppTheme.primary),
-                      onPressed: () => scaffoldKey.currentState?.openDrawer(),
-                    ),
-                  
-                  // Logo Container (Left Aligned)
-                  Expanded(
-                    flex: isMobile ? 2 : 1,
-                    child: Align(
-                      alignment: isMobile ? Alignment.center : Alignment.centerLeft,
-                      child: InkWell(
-                        onTap: () => context.go('/'),
-                        hoverColor: Colors.transparent,
-                        splashColor: Colors.transparent,
-                        child: Image.asset(
-                          'assets/images/logo.png',
-                          height: isMobile ? 80 : 130,
-                          fit: BoxFit.contain,
-                          errorBuilder: (_, __, ___) => Text(
-                            'CLINOWASH',
-                            style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.bold,
-                              fontSize: isMobile ? 28 : 36,
-                              color: AppTheme.primary,
-                              letterSpacing: 1.5,
-                            ),
-                          ),
-                        ),
+    return SizedBox(
+      height: isMobile ? 80 : 100,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          // Background Layer
+          Positioned.fill(
+            child: ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.8),
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.black.withOpacity(0.05),
+                        width: 1,
                       ),
                     ),
                   ),
-                  
-                  // Nav Links (Hidden on Mobile)
-                  if (!isMobile)
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        _NavLink(label: 'Home', onTap: () => context.go('/')),
-                        _NavLink(label: 'About', onTap: () => context.go('/about')),
-                        _NavLink(label: 'Services', onTap: () => context.go('/services')),
-                        _NavLink(label: 'Blog', onTap: () => context.go('/blog')),
-                        _NavLink(label: 'Contact', onTap: () => context.go('/contact')),
-                      ],
-                    ),
-                  
-                  // Action Group (Right Aligned)
-                  Expanded(
-                    flex: 1,
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
+                ),
+              ),
+            ),
+          ),
+
+          // Content Layer
+          Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1400),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: isMobile ? 20 : 50),
+                child: Row(
+                  children: [
+                     if (isMobile) 
+                      IconButton(
+                        icon: const Icon(Icons.menu, color: AppTheme.primary),
+                        onPressed: () => scaffoldKey.currentState?.openDrawer(),
+                      ),
+                    
+                    // Logo Container (Left Aligned with Overflow)
+                    Expanded(
+                      flex: isMobile ? 2 : 1,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        alignment: isMobile ? Alignment.center : Alignment.centerLeft,
                         children: [
-                          if (!isMobile) ...[
-                            _NavActionButton(
-                              icon: Icons.search_rounded,
-                              onTap: () {},
+                          Positioned(
+                            top: isMobile ? -10 : -20, // Center Vertically: (80-100)/2 = -10, (100-140)/2 = -20
+                            child: InkWell(
+                              onTap: () => context.go('/'),
+                              hoverColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                              child: Image.asset(
+                                'assets/images/logo.png',
+                                height: isMobile ? 100 : 140,
+                                fit: BoxFit.contain,
+                                errorBuilder: (_, __, ___) => Text(
+                                  'CLINOWASH',
+                                  style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: isMobile ? 24 : 36, // Slightly adjusted font size for new layout
+                                    color: AppTheme.primary,
+                                    letterSpacing: 1.5,
+                                  ),
+                                ),
+                              ),
                             ),
-                            const SizedBox(width: 8),
-                            _NavActionButton(
-                              icon: Icons.account_circle_outlined,
-                              onTap: () => context.push('/profile'),
+                          ),
+                          // Invisible placeholder to maintain width in Row
+                          Opacity(
+                            opacity: 0,
+                            child: SizedBox(
+                              height: isMobile ? 80 : 100, 
+                              width: isMobile ? 150 : 200, // Estimated width of logo
                             ),
-                            const SizedBox(width: 24),
-                            _ScheduleButton(
-                              onTap: () => context.go('/services'),
-                            ),
-                          ] else 
-                            IconButton(
-                              icon: const Icon(Icons.account_circle_outlined, color: AppTheme.primary),
-                              onPressed: () => context.push('/profile'),
-                            ),
+                          )
                         ],
                       ),
                     ),
-                  ),
-                ],
+                    
+                    // Nav Links (Hidden on Mobile)
+                    if (!isMobile)
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _NavLink(label: 'Home', onTap: () => context.go('/')),
+                          _NavLink(label: 'About', onTap: () => context.go('/about')),
+                          _NavLink(label: 'Services', onTap: () => context.go('/services')),
+                          _NavLink(label: 'Blog', onTap: () => context.go('/blog')),
+                          _NavLink(label: 'Contact', onTap: () => context.go('/contact')),
+                        ],
+                      ),
+                    
+                    // Action Group (Right Aligned)
+                    Expanded(
+                      flex: 1,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (!isMobile) ...[
+                              _NavActionButton(
+                                icon: Icons.search_rounded,
+                                onTap: () {},
+                              ),
+                              const SizedBox(width: 8),
+                              _NavActionButton(
+                                icon: Icons.account_circle_outlined,
+                                onTap: () => context.push('/profile'),
+                              ),
+                              const SizedBox(width: 24),
+                              _ScheduleButton(
+                                onTap: () => context.go('/services'),
+                              ),
+                            ] else 
+                              IconButton(
+                                icon: const Icon(Icons.account_circle_outlined, color: AppTheme.primary),
+                                onPressed: () => context.push('/profile'),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
